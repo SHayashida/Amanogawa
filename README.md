@@ -1,4 +1,3 @@
-# Amanogawa
 # Quantifying Clustering and Milky Way Band Morphology from a Single Smartphone Exposure
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)  
