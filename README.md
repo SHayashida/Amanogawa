@@ -9,6 +9,8 @@
 
 <!-- If the repository is private the Colab links above will fail. Make the repo public or adjust branch/path if renamed. -->
 
+> Environment: Tested & recommended with **Python 3.12.x**. Avoid 3.13 for now (SciPy <1.14 wheels missing → source build requires Fortran). Use `pyenv install 3.12.5 && pyenv local 3.12.5` or system 3.12, then create the virtual environment.
+
 English | [日本語 / Japanese](./README_ja.md)
 
 ## Overview

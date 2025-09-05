@@ -1,3 +1,4 @@
+# Python 3.12.x tested (recommend 3.12.5). For Python 3.13+, upgrade scipy>=1.14 and numpy>=2.
 numpy==1.26.4
 scipy==1.13.1
 scikit-image==0.24.0
