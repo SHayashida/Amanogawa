@@ -1,0 +1,11 @@
+{
+  "D_dark_mask": 1.9861229858551828,
+  "D_dark_skeleton": 1.9346002484830838,
+  "area_fraction": 0.9902396240131855,
+  "threshold_params": {
+    "method": "sauvola",
+    "window": 51,
+    "k": 0.2
+  },
+  "highpass_sigma": 50
+}
