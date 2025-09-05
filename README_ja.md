@@ -1,0 +1,88 @@
+# Amanogawa: 単一スマホ長時間露光 1 枚から星クラスタリングと天の川暗黒帯を同時解析するリポジトリ
+
+(この日本語版 README は英語版 README.md の元になった内容です。最新の更新は英語版を参照してください / English version is canonical.)
+
+<!-- 以下、以前の日本語混在 README 内容を保持 -->
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
+
+## Overview / 概要
+このプロジェクトは「スマートフォンで撮ったたった 1 枚の天の川画像」から、以下の2つの視点を統合的に量的評価する再現可能ワークフローです。
+
+1. 星の空間クラスタリング（2 点相関関数 / 近傍距離 / フラクタル次元）
+2. 天の川バンド（スターブリッジ）と暗黒帯（ダークレーン）の幾何・濃淡構造（主軸・幅・減光コントラスト指標）
+
+従来は広視野 CCD や複数フレームを要する解析を、あえて「市販スマホ夜景モード長時間露光 1 枚」に制約し、市民科学レベルでも到達可能な研究的深度を示します。
+
+> Hayashida, S. (2025). *Quantifying Clustering and Dark Lane / Band Morphology of the Milky Way from a Single Smartphone Exposure.* (In prep.)
+
+### 1 枚画像で何が“同時”にわかるか
+| 観点 | 取得指標 | 科学的含意 |
+|------|----------|-------------|
+| 星クラスタリング | 2 点相関関数 \(\xi(r)\), 最近傍距離分布, ボックスカウント次元 \(D\) | 星形成・散開星団残骸の階層性ヒント |
+| バンド形状 | 主軸角, ガウシアン / ローレンツィアン FWHM | 天の川投影幅・撮影条件による拡散度 |
+| 暗黒帯 (ダークレーン) | コントラストプロファイル, ローカル減光指標 (Normalized Intensity Deficit) | 星間ダスト濃淡の相対トレース |
+| 輝度階層クラスタリング | 明/中/暗（輝度 tercile）別 \(\xi(r)\) とブートストラップ CI | 明るい星優勢スケール vs 微弱星分布差 |
+
+暗黒帯解析では、主軸直交方向の輝度プロファイルから「星密度 + 背景輝度」を分離し、コントラスト正規化した減光深度 (contrast depth) を推定します。星クラスタリングと同じ座標系を共有することで、どのスケールで減光構造が相関するかを比較可能にします。
+
+## Key Features / 特徴
+- スマホ画像 1 枚から「星分布統計 + 暗黒帯濃淡」まで一気通貫
+- Colab ベースで誰でも再現：GPU / 専用天文機材不要
+- 閾値スイープで検出ロバスト性を検証（過小 / 過検出の系統誤差を可視化）
+- 輝度階層別クラスタリングにブートストラップ CI を付与
+- バンド幅：ガウシアン + ローレンツィアン両フィットでコアとウィングを分離
+- 暗黒帯：正規化輝度欠損 (Normalized Intensity Deficit) プロファイル指標
+- 解析ステップはモジュール化（検出器・相関推定器を差し替え可能）
+- 研究／教育／市民科学ワークショップ教材として再利用容易
+
+## Repository Structure / 現在の構成
+```
+├── notebooks/
+│   ├── Amanogawa_band.ipynb
+│   └── Amanogawa_dark.ipynb
+├── src/
+│   ├── detection.py
+│   ├── spatial_stats.py
+│   ├── band_geometry.py
+│   ├── photometry.py
+│   └── plotting.py
+├── data/
+│   ├── raw/
+│   ├── interim/
+│   └── processed/
+├── outputs/
+│   ├── figures/
+│   ├── IMG_5991_star_coords.csv
+│   ├── threshold_sweep_summary.csv
+│   └── band_width_fit_summary.json
+├── requirements.txt
+└── README.md
+```
+
+## Quick Start / 使い方
+(英語版参照)
+
+## Workflow / 処理フロー
+(英語版参照)
+
+## Method Notes / 手法メモ
+(英語版参照)
+
+## Outputs & Files / 生成物
+(英語版参照)
+
+## Extending / 拡張案
+(英語版参照)
+
+## FAQ
+(英語版参照)
+
+## Citation / 引用
+(英語版参照)
+
+## License
+MIT / CC BY 4.0
+
+## Contact
+1720067169@campus.ouj.ac.jp (Shunya Hayashida)

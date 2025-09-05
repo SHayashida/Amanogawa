@@ -1,40 +1,55 @@
-# Quantifying Clustering and Milky Way Band Morphology from a Single Smartphone Exposure
+<!-- NOTE: Japanese version has been moved to README_ja.md -->
+# Amanogawa: Quantifying Milky Way Stellar Clustering & Dark Lane Morphology from a Single Smartphone Exposure
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
+[![Reproducibility](https://img.shields.io/badge/Reproducible-Yes-blue.svg)](#reproducibility-workflow)
+[![Status](https://img.shields.io/badge/Status-Alpha-orange.svg)]()
+[![Colab: Dark Analysis](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/Amanogawa_dark.ipynb)
+[![Colab: Band Geometry](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/Amanogawa_band.ipynb)
+
+<!-- If the repository is private the Colab links above will fail. Make the repo public or adjust branch/path if renamed. -->
+
+English | [日本語 / Japanese](./README_ja.md)
 
 ## Overview
-This repository contains the open, reproducible workflow accompanying the manuscript:
+This repository demonstrates how a *single consumer smartphone long‑exposure* Milky Way image can yield:
 
-> Hayashida, S. (2025). *Quantifying Clustering and Band Morphology of the Milky Way from a Single Smartphone Exposure.* (In preparation for Zenodo / journal submission.)
+1. Stellar spatial clustering metrics (two‑point correlation function \(\xi(r)\), nearest‑neighbour distribution, box‑count / fractal dimension \(D\)).
+2. Milky Way band & dark lane (dust lane) morphology: principal axis, multi‑model width (Gaussian & Lorentzian), and a normalized intensity deficit (NID) tracing absorption contrast.
 
-Using a single long‐exposure consumer smartphone image, the pipeline derives:
-1. Two‑point correlation function \(\xi(r)\) of detected stars.
-2. Box‑count (fractal) dimension \(D\) of the spatial distribution.
-3. Principal axis and perpendicular full width at half maximum (FWHM) of the Milky Way band via weighted PCA and profile fitting.
-4. Magnitude‑stratified clustering analysis (Bright / Mid / Faint terciles).
+The scientific motivation is to lower the barrier for quantitative Galactic structure exploration to a citizen‑science friendly data source while still preserving methodological rigor.
 
-The goal is to demonstrate that a citizen‐science friendly, low‑barrier dataset can yield astrophysically meaningful clustering and structural measurements.
+> Hayashida, S. (2025). *Quantifying Clustering and Dark Lane / Band Morphology of the Milky Way from a Single Smartphone Exposure.* (In preparation)
+
+### Dual Perspective from One Image
+| Aspect | Derived Metrics | Scientific Signal |
+|--------|-----------------|-------------------|
+| Stellar Clustering | \(\xi(r)\), NND PDF, fractal dimension \(D\) | Hierarchical structure, dissolved cluster remnants |
+| Band Geometry | Principal axis angle, FWHM (Gaussian / Lorentzian) | Projected width vs atmospheric / optical smoothing |
+| Dark Lane Contrast | Normalized intensity deficit profile | Relative dust column variation (qualitative) |
+| Magnitude-Stratified Clustering | Bright / mid / faint tercile \(\xi(r)\) + bootstrap CI | Scale dependence with luminosity selection |
+
+The dark lane module operates in the same transformed PCA coordinate frame as clustering, enabling cross‑scale comparison between extinction structure and stellar correlation features.
 
 ## Key Features
-- End‑to‑end reproducible pipeline (Colab + local scripts).
-- Robustness checks via detection threshold sweep.
-- Bootstrap confidence intervals for magnitude‑stratified \(\xi(r)\).
-- Dual profile (Gaussian & Lorentzian) Milky Way band width estimates.
-- All intermediate data (CSV / JSON) and figures prepared for Zenodo archival.
-- Modular design to swap in alternative detection or correlation estimators (e.g. Landy–Szalay).
+- Single-image end‑to‑end pipeline (no stacking required)
+- Colab‑first reproducibility; zero local install required to explore
+- Threshold sweep robustness diagnostics for detection biases
+- Magnitude‑stratified clustering with bootstrap confidence intervals
+- Dual profile (Gaussian + Lorentzian) band width estimation (core vs wings)
+- Dark lane normalized intensity deficit (NID) metric in shared geometry frame
+- Modular architecture: swap detection, correlation estimators (e.g., Landy–Szalay)
+- Ready for citizen‑science workshops / teaching demonstrations
 
-## Repository Structure (intended)
+## Repository Structure
 ```
-├── notebooks/
-│   ├── 01_detection_and_threshold_sweep.ipynb
-│   ├── 02_two_point_and_fractal.ipynb
-│   ├── 03_magnitude_stratified_clustering.ipynb
-│   ├── 04_band_axis_and_width.ipynb
-│   └── 99_utility_functions.ipynb
+├── notebooks/                        # Colab / Jupyter ノートブック（後日追加）
+│   ├── Amanogawa_band.ipynb          # バンド & 暗黒帯解析（既存）
+│   └── Amanogawa_dark.ipynb          # クラスタリング + 暗黒帯統合（既存）
 ├── src/
 │   ├── detection.py              # LoG detection / threshold sweep
 │   ├── spatial_stats.py          # two-point correlation, box-count, NND
-│   ├── band_geometry.py          # PCA axis + width fitting
+│   ├── band_geometry.py          # PCA axis + width fitting + dark lane contrast
 │   ├── photometry.py             # simple aperture photometry & magnitude bins
 │   └── plotting.py               # figure generation utilities
 ├── data/
@@ -57,37 +72,41 @@ The goal is to demonstrate that a citizen‐science friendly, low‑barrier data
 ├── requirements.txt (or environment.yml)
 └── README.md
 ```
-(If some files are not yet present, treat this as a target layout. Adjust paths in notebooks accordingly.)
+Missing items are staged for addition; notebooks assume this layout.
 
 ## Quick Start
-### Option A: Google Colab (fastest)
-1. Open the notebook `notebooks/01_detection_and_threshold_sweep.ipynb` in Colab (use the "Open in Colab" badge if added later).
-2. Upload (or mount) `IMG_5991.jpg` (and WCS FITS if available) into the Colab session under `data/raw/`.
-3. Run all cells sequentially; generated CSV/JSON and figures will appear in `outputs/`.
-4. Proceed with `02_`, `03_`, and `04_` notebooks for full analysis.
+### A. Google Colab (fastest)
+1. Open `notebooks/Amanogawa_dark.ipynb` in Colab.
+2. Upload your Milky Way image to `data/raw/` in the Colab session.
+3. Run cells top‑to‑bottom (detection → threshold sweep → clustering → band & dark lane morphology).
+4. Artifacts appear under `outputs/` (CSV / JSON / PNG).
 
-### Option B: Local Environment
-1. Clone the repository.
-2. Create a virtual environment and install dependencies (see below).
-3. Place `IMG_5991.jpg` into `data/raw/`.
-4. Run the detection threshold sweep script:
+### B. Local Execution
+1. Clone repo.
+2. Create virtual environment & install dependencies.
+3. Place image in `data/raw/`.
+4. Detection + threshold sweep:
    ```bash
-   python -m src.detection --image data/raw/IMG_5991.jpg --out outputs/ --threshold-min 0.03 --threshold-max 0.08 --steps 10
+   python -m src.detection --image data/raw/IMG_5991.jpg --out outputs/ \
+       --threshold-min 0.03 --threshold-max 0.08 --steps 10
    ```
-5. Compute spatial statistics:
+5. Spatial statistics:
    ```bash
    python -m src.spatial_stats --coords outputs/IMG_5991_star_coords.csv --out outputs/
    ```
-6. Magnitude stratified clustering:
+6. Magnitude‑stratified clustering:
    ```bash
-   python -m src.photometry --image data/raw/IMG_5991.jpg --coords outputs/IMG_5991_star_coords.csv --out outputs/
-   python -m src.spatial_stats --coords outputs/IMG_5991_star_coords.csv --magnitude-bins outputs/magnitude_bins.csv --out outputs/
+   python -m src.photometry --image data/raw/IMG_5991.jpg \
+       --coords outputs/IMG_5991_star_coords.csv --out outputs/
+   python -m src.spatial_stats --coords outputs/IMG_5991_star_coords.csv \
+       --magnitude-bins outputs/magnitude_bins.csv --out outputs/
    ```
-7. Band geometry:
+7. Band geometry + dark lane contrast:
    ```bash
-   python -m src.band_geometry --coords outputs/IMG_5991_star_coords.csv --wcs data/raw/IMG_5991_wcs.fits --out outputs/
+   python -m src.band_geometry --coords outputs/IMG_5991_star_coords.csv \
+       --wcs data/raw/IMG_5991_wcs.fits --out outputs/
    ```
-8. Generate publication figures:
+8. Figures:
    ```bash
    python -m src.plotting --out outputs/figures/
    ```
@@ -126,31 +145,33 @@ pip install -r requirements.txt
 ```
 
 ## Reproducibility Workflow
-1. Detection threshold sweep produces: `IMG_5991_star_coords.csv` (fiducial) and `threshold_sweep_summary.csv`.
-2. Spatial statistics script computes: two-point correlation (binned), nearest-neighbor distribution, box-count scaling (stores slope / D).
-3. Photometry assigns magnitude terciles; re-run correlation for each bin with bootstrap resampling.
-4. Band geometry script: weighted PCA axis + perpendicular profile fits (Gaussian & Lorentzian) -> `band_width_fit_summary.json`.
-5. Plotting consolidates outputs into figure PNGs matching manuscript captions.
-6. (Optional) Export provenance metadata (software versions, command arguments) into `outputs/run_metadata.yaml`.
+1. Detection & threshold sweep → `IMG_5991_star_coords.csv`, `threshold_sweep_summary.csv`
+2. Spatial stats → correlation, NND, fractal dimension
+3. Magnitude binning & bootstrap clustering
+4. Band axis & width (Gaussian / Lorentzian) + dark lane normalized intensity deficit profile
+5. Plot + aggregate → figures & summary JSON
+6. (Optional) provenance export: `outputs/run_metadata.yaml`
 
 ## Method Notes
-- Detection: Laplacian-of-Gaussian blob detection; threshold sweep ensures stability of \(\xi(r)\) and \(D\).
-- Two-point correlation: simple \(DD/RR - 1\); for publication-level refinement add Landy–Szalay with DR and edge corrections.
-- Fractal dimension: linear fit in log–log occupancy vs inverse box size.
-- Band width: rotate into PCA frame; integrate counts perpendicular to the ridge; fit both Gaussian & Lorentzian to capture core vs wings.
-- Plate scale: derived from an astrometry.net WCS flagged as truncated; angle estimates are approximate.
+- Detection: Laplacian‑of‑Gaussian + threshold sweep to locate stability plateau (avoid under/over detection bias)
+- Two‑point correlation: baseline \(DD/RR - 1\); future: Landy–Szalay with edge correction
+- Fractal dimension: log–log box count regression slope
+- Dark lane: extract perpendicular strips in PCA frame → robust (median) background → normalized intensity deficit ( (background − signal)/background )
+- Band width: fit Gaussian + Lorentzian to separate core concentration vs broader scattered wings
+- Angular calibration: approximate WCS (astrometry.net) — treat angles as provisional
 
 ## Outputs & Files
 | File | Description |
 |------|-------------|
-| `IMG_5991_star_coords.csv` | Detected star positions (x, y, radius) at fiducial threshold. |
-| `threshold_sweep_summary.csv` | Rows of threshold, N, D, mean ξ. |
-| `band_width_fit_summary.json` | Principal axis angle, Gaussian/Lorentzian FWHM (px & degrees). |
-| `TaskA.png` | Threshold sweep diagnostics. |
-| `TaskB.png` | Magnitude-stratified ξ(r). |
-| `Two_point_correlation.png` | Full-sample ξ(r) curve. |
-| `Box_count_scaling.png` | Fractal dimension regression plot. |
-| `NND.png` | Nearest-neighbor distance distribution. |
+| `IMG_5991_star_coords.csv` | Detected star positions (x, y, radius) |
+| `threshold_sweep_summary.csv` | Threshold, count, fractal D, mean ξ, stability flag |
+| `band_width_fit_summary.json` | Axis angle, Gaussian/Lorentzian FWHM (px/deg), dark lane contrast metrics |
+| `TaskA.png` | Threshold sweep diagnostics |
+| `TaskB.png` | Magnitude‑stratified \(\xi(r)\) |
+| `Two_point_correlation.png` | Full‑sample \(\xi(r)\) |
+| `Box_count_scaling.png` | Fractal dimension regression |
+| `NND.png` | Nearest‑neighbour distance distribution |
+| `Dark_lane_profile.png` | Normalized intensity deficit profile |
 
 ## Quality & Validation
 - Internal assertions (recommended):
@@ -161,19 +182,20 @@ pip install -r requirements.txt
 - Add lightweight unit tests under `tests/` (e.g., pytest) for math utilities.
 
 ## Extending
-- Replace LoG with PSF-fitting (e.g., DAOStarFinder / photutils) to improve faint source fidelity.
-- Implement Landy–Szalay estimator and compare variance reduction.
-- Integrate multi-epoch images to study temporal band width variability vs environmental conditions.
+- Replace LoG with PSF fitting (DAOStarFinder) for faint star completeness
+- Landy–Szalay / Ripley K for bias reduction & variance diagnostics
+- Cross‑correlate dark lane contrast vs clustering scale
+- Multi‑epoch / varying light‑pollution comparative meta‑analysis
 
 ## FAQ
-**Q:** Do I need the WCS file?  
-**A:** Only if you want angular (degree) conversions; pixel-space results work without it.
+**Q:** Do I need WCS?  
+**A:** Only for angular conversions; pixel‑space analysis works without it.
 
-**Q:** Why are angle estimates labeled approximate?  
-**A:** The FITS plate solution file was flagged truncated; treat scale/rotation as provisional.
+**Q:** Light pollution impact on dark lane metrics?  
+**A:** Robust background estimation mitigates moderate gradients; extreme skyglow still reduces S/N.
 
-**Q:** Can I use another smartphone image?  
-**A:** Yes—place it in `data/raw/` and adjust script arguments; thresholds may need tuning.
+**Q:** Use another smartphone image?  
+**A:** Yes—drop it in `data/raw/`, re‑tune detection thresholds if optics / exposure differ.
 
 ## Contributing
 Pull requests are welcome. Please:
@@ -183,21 +205,21 @@ Pull requests are welcome. Please:
 4. Update README / docs if behavior changes.
 
 ## Citation
-If you use this code or derived data, please cite the manuscript and the Zenodo archive (replace DOI after publication):
+Update DOI after Zenodo release.
 
-**Plain text:**  
-Hayashida, S. (2025). Quantifying clustering and band morphology of the Milky Way from a single smartphone exposure. Zenodo. https://doi.org/10.5281/zenodo.xxxxxxx
+Plain text:
+Hayashida, S. (2025). Quantifying clustering and dark lane / band morphology of the Milky Way from a single smartphone exposure. Zenodo. https://doi.org/10.5281/zenodo.xxxxxxx
 
-**BibTeX:**
+BibTeX:
 ```bibtex
-@misc{hayashida2025smartphone_milky_way,
-  author       = {Hayashida, Shunya},
-  title        = {Quantifying Clustering and Band Morphology of the Milky Way from a Single Smartphone Exposure},
-  year         = {2025},
-  publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.xxxxxxx},
-  url          = {https://doi.org/10.5281/zenodo.xxxxxxx},
-  note         = {Version 1.0.0}
+@misc{hayashida2025amanogawa,
+   author       = {Hayashida, Shunya},
+   title        = {Quantifying Clustering and Dark Lane / Band Morphology of the Milky Way from a Single Smartphone Exposure},
+   year         = {2025},
+   publisher    = {Zenodo},
+   doi          = {10.5281/zenodo.xxxxxxx},
+   url          = {https://doi.org/10.5281/zenodo.xxxxxxx},
+   note         = {Amanogawa v1.0.0}
 }
 ```
 
