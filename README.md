@@ -4,8 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 [![Reproducibility](https://img.shields.io/badge/Reproducible-Yes-blue.svg)](#reproducibility-workflow)
 [![Status](https://img.shields.io/badge/Status-Alpha-orange.svg)]()
-[![Colab: Dark Analysis](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/Amanogawa_dark.ipynb)
-[![Colab: Band Geometry](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/Amanogawa_band.ipynb)
+[![Colab: Dark Analysis](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/02_dark_morphology.ipynb)
+[![Colab: Band Geometry](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
 
 <!-- If the repository is private the Colab links above will fail. Make the repo public or adjust branch/path if renamed. -->
 
@@ -45,9 +45,23 @@ The dark lane module operates in the same transformed PCA coordinate frame as cl
 
 ## Repository Structure
 ```
-├── notebooks/                        # Colab / Jupyter ノートブック（後日追加）
-│   ├── Amanogawa_band.ipynb          # バンド & 暗黒帯解析（既存）
-│   └── Amanogawa_dark.ipynb          # クラスタリング + 暗黒帯統合（既存）
+├── notebooks/                        # Analysis notebooks
+│   ├── 01_band_analysis.ipynb        # Band geometry & dark lane morphology  
+│   ├── 02_dark_morphology.ipynb      # Stellar clustering + dark lane integration
+│   └── archive/                      # Backup versions
+├── data/
+│   └── raw/
+│       └── IMG_5991.jpg              # Original smartphone image
+├── outputs/
+│   ├── figures/                      # All generated figures
+│   │   ├── FigA_ROI_mask.png        # Analysis regions
+│   │   ├── FigB_star_dark_correlation.png
+│   │   └── FigC_CCDF_band_vs_outside.png
+│   └── results/                      # Numerical outputs
+│       ├── IMG_5991_star_coords.csv  # Detected stellar positions
+│       ├── band_roi_contrast_summary.json
+│       ├── bulge_radial_profiles.csv
+│       └── dark_morphology_summary.json
 ├── src/
 │   ├── detection.py              # LoG detection / threshold sweep
 │   ├── spatial_stats.py          # two-point correlation, box-count, NND
@@ -78,7 +92,7 @@ Missing items are staged for addition; notebooks assume this layout.
 
 ## Quick Start
 ### A. Google Colab (fastest)
-1. Open `notebooks/Amanogawa_dark.ipynb` in Colab.
+1. Open `notebooks/02_dark_morphology.ipynb` or `notebooks/01_band_analysis.ipynb` in Colab.
 2. Upload your Milky Way image to `data/raw/` in the Colab session.
 3. Run cells top‑to‑bottom (detection → threshold sweep → clustering → band & dark lane morphology).
 4. Artifacts appear under `outputs/` (CSV / JSON / PNG).

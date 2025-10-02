@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 
 ## Overview / 概要
-このプロジェクトは「スマートフォンで撮ったたった 1 枚の天の川画像」から、以下の2つの視点を統合的に量的評価する再現可能ワークフローです。
+このプロジェクトは「スマートフォンで撮ったたった1枚の天の川画像」から、以下の2つの視点を統合的に量的評価する再現可能ワークフローです。
 
 1. 星の空間クラスタリング（2 点相関関数 / 近傍距離 / フラクタル次元）
 2. 天の川バンド（スターブリッジ）と暗黒帯（ダークレーン）の幾何・濃淡構造（主軸・幅・減光コントラスト指標）
@@ -85,4 +85,4 @@
 MIT / CC BY 4.0
 
 ## Contact
-1720067169@campus.ouj.ac.jp (Shunya Hayashida)
+Shunya Hayashida (https://x.com/HayashidaLynda)
