@@ -1,11 +1,17 @@
 {
-  "D_dark_mask": 1.9861229858551828,
-  "D_dark_skeleton": 1.873135524419636,
-  "area_fraction": 0.006454970334256994,
+  "fractal_dimension_dark_mask": 1.986122985855182,
+  "fractal_dimension_skeleton": 1.9346002484830838,
+  "dark_area_fraction": 0.9902396240131855,
+  "num_dark_components": 1,
+  "largest_component_area_px": 12073762,
+  "threshold_method": "sauvola",
   "threshold_params": {
-    "method": "sauvola",
-    "window": 61,
+    "window_size": 51,
     "k": 0.2
   },
-  "highpass_sigma": 50
+  "highpass_sigma_px": 50,
+  "image_size": {
+    "width": 3024,
+    "height": 4032
+  }
 }

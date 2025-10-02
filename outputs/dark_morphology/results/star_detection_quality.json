@@ -1,0 +1,13 @@
+{
+  "total_detections": 13733,
+  "mean_snr": 6.259470607787935,
+  "high_quality_fraction": 0.818,
+  "mean_radius_px": 1.5,
+  "spatial_clustering_ratio": 1.1857798581871688,
+  "detection_method": "laplacian_of_gaussian",
+  "parameters": {
+    "max_sigma": 6,
+    "num_sigma": 12,
+    "threshold": 0.05
+  }
+}
