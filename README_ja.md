@@ -82,7 +82,7 @@
 (英語版参照)
 
 ## License
-MIT / CC BY 4.0
+(英語版参照)
 
 ## Contact
 Shunya Hayashida (https://x.com/HayashidaLynda)
