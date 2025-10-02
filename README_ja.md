@@ -37,28 +37,7 @@
 - 研究／教育／市民科学ワークショップ教材として再利用容易
 
 ## Repository Structure / 現在の構成
-```
-├── notebooks/
-│   ├── Amanogawa_band.ipynb
-│   └── Amanogawa_dark.ipynb
-├── src/
-│   ├── detection.py
-│   ├── spatial_stats.py
-│   ├── band_geometry.py
-│   ├── photometry.py
-│   └── plotting.py
-├── data/
-│   ├── raw/
-│   ├── interim/
-│   └── processed/
-├── outputs/
-│   ├── figures/
-│   ├── IMG_5991_star_coords.csv
-│   ├── threshold_sweep_summary.csv
-│   └── band_width_fit_summary.json
-├── requirements.txt
-└── README.md
-```
+(英語版参照)
 
 ## Quick Start / 使い方
 (英語版参照)

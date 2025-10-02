@@ -1,57 +1,79 @@
-# 天の川バンド構造解析結果
+# Amanogawa Analysis Outputs
 
-## 概要
-IMG_5991.jpgの天の川画像に対する統計解析結果です。
+This directory contains all analysis results from the Milky Way smartphone photography analysis project.
 
-## 解析日時
-2025年10月02日 23:04
+## Directory Structure
 
-## 生成ファイル
+```
+outputs/
+├── band_analysis/           # Results from 01_band_analysis.ipynb
+│   ├── figures/            # All visualization outputs
+│   │   ├── correlation_function_detailed.png
+│   │   ├── fractal_dimension_detailed.png
+│   │   ├── magnitude_*.png
+│   │   ├── milky_way_band_profile.png
+│   │   ├── nearest_neighbor_*.png
+│   │   ├── star_*.png
+│   │   └── two_point_correlation.png
+│   └── results/            # All numerical analysis results
+│       ├── band_*.json
+│       ├── complete_analysis_summary.json
+│       ├── detection_summary.json
+│       ├── magnitude_analysis.json
+│       ├── sample_*.json
+│       ├── spatial_statistics_detailed.json
+│       └── threshold_sensitivity_analysis.csv
+├── dark_morphology/         # Results from 02_dark_morphology.ipynb
+│   ├── figures/            # Dark lane analysis visualizations
+│   └── results/            # Dark morphology numerical results
+│       ├── bulge_radial_profiles.csv
+│       └── dark_morphology_summary.json
+├── IMG_5991_star_coords.csv   # Shared star coordinates (used by both analyses)
+├── sample_star_coords.csv     # Sample coordinates for testing
+├── ANALYSIS_MASTER_SUMMARY.json  # Combined results summary
+└── README.md               # This file
+```
 
-### 結果データ (results/)
-- band_width_analysis.json
-- band_roi_contrast_summary.json
-- dark_morphology_summary.json
-- sample_detection_summary.json
-- complete_analysis_summary.json
-- magnitude_analysis.json
-- spatial_statistics_detailed.json
-- sample_analysis_summary.json
-- detection_summary.json
+## File Descriptions
 
-### 図表 (figures/)  
-- magnitude_correlation_analysis.png
-- FigC_CCDF_band_vs_outside.png
-- parameter_sensitivity_analysis.png
-- magnitude_distribution.png
-- two_point_correlation.png
-- milky_way_band_profile.png
-- nearest_neighbor_distribution.png
-- magnitude_spatial_distribution.png
-- correlation_function_detailed.png
-- nearest_neighbor_detailed.png
-- star_density_map.png
-- star_distribution_map.png
-- FigB_star_dark_correlation.png
-- FigA_ROI_mask.png
-- fractal_dimension_plot.png
-- fractal_dimension_detailed.png
+### Shared Data
+- **IMG_5991_star_coords.csv**: Star coordinates detected from the main image
+- **sample_star_coords.csv**: Sample coordinates for testing and validation
+- **ANALYSIS_MASTER_SUMMARY.json**: Master summary combining all analysis results
 
-### 座標データ
-- IMG_5991_star_coords.csv
+### Band Analysis (01_band_analysis.ipynb)
+Statistical analysis of stellar distribution patterns and Milky Way band structure:
 
-## 解析手法
-1. LoG (Laplacian of Gaussian) による星検出
-2. 最近傍距離分布解析
-3. フラクタル次元測定 (ボックスカウント法)
-4. 2点相関関数計算
-5. 等級別空間分布解析
-6. PCA主成分分析による天の川バンド幅測定
+**Figures:**
+- Correlation functions and spatial statistics visualizations
+- Fractal dimension analysis plots
+- Magnitude distribution and correlation plots
+- Star density maps and distributions
+- Band profile measurements
 
-## 再現性
-このノートブック (01_band_analysis.ipynb) を実行することで、
-すべての結果を再現できます。
+**Results:**
+- Detection parameters and star counts
+- Spatial statistics (nearest neighbor, fractal dimension, 2-point correlation)
+- Magnitude analysis and photometry results
+- Band geometry measurements
+- Parameter sensitivity analysis
 
-## Zenodo対応
-このデータセットはZenodo公開に対応しており、
-完全に実行可能な状態で提供されています。
+### Dark Morphology (02_dark_morphology.ipynb)
+Analysis of dark lane structure and bulge profiling:
+
+**Results:**
+- Dark nebula fractal dimensions
+- Bulge radial profiles (surface brightness and star density)
+- Morphological characteristics of dust lanes
+
+## Usage
+
+Each notebook generates its outputs in the corresponding subdirectory:
+- Run `01_band_analysis.ipynb` → outputs saved to `band_analysis/`
+- Run `02_dark_morphology.ipynb` → outputs saved to `dark_morphology/`
+
+All paths are designed to work from the notebook directory using relative paths.
+
+## Zenodo Publication
+
+This structure is optimized for Zenodo dataset publication, with clear separation between different analysis types while maintaining shared data accessibility.
