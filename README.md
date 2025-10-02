@@ -42,12 +42,14 @@ The dark lane module operates in the same transformed PCA coordinate frame as cl
 - Dark lane normalized intensity deficit (NID) metric in shared geometry frame
 - Modular architecture: swap detection, correlation estimators (e.g., Landy–Szalay)
 - Ready for citizen‑science workshops / teaching demonstrations
+- Integrated astronomical validity notebook consolidating cross‑checks across pipelines
 
 ## Repository Structure
 ```
 ├── notebooks/                        # Analysis notebooks
-│   ├── 01_band_analysis.ipynb        # Complete analysis pipeline (English figures)
-│   ├── 02_dark_morphology.ipynb      # Stellar clustering + dark lane integration
+│   ├── 01_band_analysis.ipynb        # Band geometry + stellar clustering pipeline
+│   ├── 02_dark_morphology.ipynb      # Dark lane morphology & structural analysis
+│   ├── 03_astronomical_validity.ipynb# Integrated cross-pipeline validation dashboard
 │   └── backup/                       # Backup versions
 ├── data/
 │   └── raw/
@@ -96,6 +98,7 @@ Missing items are staged for addition; notebooks assume this layout.
 2. Upload your Milky Way image to `data/raw/` in the Colab session.
 3. Run cells top‑to‑bottom (detection → threshold sweep → clustering → band & dark lane morphology).
 4. Artifacts appear under `outputs/` (CSV / JSON / PNG).
+5. Optional: launch `notebooks/03_astronomical_validity.ipynb` in Colab to run the consolidated astronomical validity dashboard using the newly generated outputs.
 
 ### B. Local Execution
 1. Clone repo.
@@ -126,6 +129,13 @@ Missing items are staged for addition; notebooks assume this layout.
    ```bash
    python -m src.plotting --out outputs/figures/
    ```
+9. Integrated validity (optional but recommended): open `notebooks/03_astronomical_validity.ipynb` to aggregate the exported summaries and produce the pass/fail scorecard.
+
+## Integrated Astronomical Validity Notebook
+- **Purpose:** Aggregates outputs from `01_band_analysis.ipynb` and `02_dark_morphology.ipynb` to confirm that stellar, geometric, and dark-lane metrics are mutually consistent.
+- **Inputs:** Reads JSON/CSV artifacts already stored in `outputs/`, so no reprocessing is required.
+- **Outputs:** Weighted scorecard (`consistency_df`) and visual pass/fail dashboard saved under `outputs/dark_morphology/figures/`.
+- **Usage:** Run after either notebook to sanity-check results before drafting manuscripts or sharing citizen-science findings.
 
 ## Dependencies
 Recommended baseline (pin exact versions for reproducibility when finalizing Zenodo DOI):
@@ -167,6 +177,7 @@ pip install -r requirements.txt
 4. Band axis & width (Gaussian / Lorentzian) + dark lane normalized intensity deficit profile
 5. Plot + aggregate → figures & summary JSON
 6. (Optional) provenance export: `outputs/run_metadata.yaml`
+7. Integrated cross-check: run `notebooks/03_astronomical_validity.ipynb` to verify star/dust metrics and generate the weighted validity scorecard
 
 ## Method Notes
 - Detection: Laplacian‑of‑Gaussian + threshold sweep to locate stability plateau (avoid under/over detection bias)
