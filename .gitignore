@@ -26,6 +26,16 @@ Thumbs.db
 # Paper drafts (keep separate for now)
 paper/
 
+# Analysis outputs (keep sample results, ignore new runs)
+outputs/results/*.json
+outputs/figures/*.png
+outputs/*.csv
+
+# Keep the sample outputs for Zenodo publication
+!outputs/results/sample_*
+!outputs/figures/sample_*
+!outputs/sample_*
+
 # Large temporary files
 *.tmp
 *.log

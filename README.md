@@ -46,22 +46,22 @@ The dark lane module operates in the same transformed PCA coordinate frame as cl
 ## Repository Structure
 ```
 ├── notebooks/                        # Analysis notebooks
-│   ├── 01_band_analysis.ipynb        # Band geometry & dark lane morphology  
+│   ├── 01_band_analysis.ipynb        # Complete analysis pipeline (English figures)
 │   ├── 02_dark_morphology.ipynb      # Stellar clustering + dark lane integration
-│   └── archive/                      # Backup versions
+│   └── backup/                       # Backup versions
 ├── data/
 │   └── raw/
 │       └── IMG_5991.jpg              # Original smartphone image
 ├── outputs/
-│   ├── figures/                      # All generated figures
-│   │   ├── FigA_ROI_mask.png        # Analysis regions
-│   │   ├── FigB_star_dark_correlation.png
-│   │   └── FigC_CCDF_band_vs_outside.png
-│   └── results/                      # Numerical outputs
-│       ├── IMG_5991_star_coords.csv  # Detected stellar positions
-│       ├── band_roi_contrast_summary.json
-│       ├── bulge_radial_profiles.csv
-│       └── dark_morphology_summary.json
+│   ├── figures/                      # Generated figures (ignored by git)
+│   │   ├── sample_star_distribution.png    # Sample output (kept for Zenodo)
+│   │   ├── sample_density_map.png          # Sample output (kept for Zenodo)
+│   │   └── FigA_ROI_mask.png               # Analysis regions
+│   ├── results/                      # Numerical outputs (ignored by git)
+│   │   ├── sample_analysis_summary.json    # Sample output (kept for Zenodo)
+│   │   ├── sample_detection_summary.json   # Sample output (kept for Zenodo)
+│   │   └── dark_morphology_summary.json
+│   └── sample_star_coords.csv        # Sample stellar positions (kept for Zenodo)
 ├── src/
 │   ├── detection.py              # LoG detection / threshold sweep
 │   ├── spatial_stats.py          # two-point correlation, box-count, NND
@@ -179,15 +179,17 @@ pip install -r requirements.txt
 ## Outputs & Files
 | File | Description |
 |------|-------------|
-| `IMG_5991_star_coords.csv` | Detected star positions (x, y, radius) |
-| `threshold_sweep_summary.csv` | Threshold, count, fractal D, mean ξ, stability flag |
-| `band_width_fit_summary.json` | Axis angle, Gaussian/Lorentzian FWHM (px/deg), dark lane contrast metrics |
-| `TaskA.png` | Threshold sweep diagnostics |
-| `TaskB.png` | Magnitude‑stratified \(\xi(r)\) |
-| `Two_point_correlation.png` | Full‑sample \(\xi(r)\) |
-| `Box_count_scaling.png` | Fractal dimension regression |
-| `NND.png` | Nearest‑neighbour distance distribution |
-| `Dark_lane_profile.png` | Normalized intensity deficit profile |
+| `sample_star_coords.csv` | Sample detected star positions (x, y, radius) |
+| `sample_analysis_summary.json` | Complete analysis results sample |
+| `sample_star_distribution.png` | Sample star distribution visualization |
+| `sample_density_map.png` | Sample density map visualization |
+| `threshold_sweep_summary.csv` | Threshold sensitivity analysis results |
+| `band_width_fit_summary.json` | Axis angle, Gaussian/Lorentzian FWHM metrics |
+| `Two_point_correlation.png` | Full-sample ξ(r) function |
+| `Fractal_dimension_plot.png` | Box counting method scaling |
+| `Nearest_neighbor_distribution.png` | NND probability distribution |
+
+**Note:** The `outputs/` directory contains sample results for Zenodo publication. When running analyses, new outputs are generated but ignored by git (.gitignore), preserving the sample files for reproducibility.
 
 ## Quality & Validation
 - Internal assertions (recommended):
