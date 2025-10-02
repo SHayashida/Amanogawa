@@ -13,5 +13,12 @@
   "image_size": {
     "width": 3024,
     "height": 4032
-  }
+  },
+  "fractal_dimension_stars": 1.6723916684578197,
+  "bulge_center_px": [
+    1443.710624044273,
+    2110.5995485327317
+  ],
+  "bulge_principal_axis_deg": -120.04415475122664,
+  "bulge_axis_ratio": 0.7654231862831123
 }
