@@ -109,6 +109,11 @@ def boxcount_fractal_dimension(
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="amanogawa-stats", description="Spatial statistics on star coordinates")
     p.add_argument("--coords", required=True, help="CSV with columns x,y")
+    p.add_argument(
+        "--magnitude-bins",
+        default=None,
+        help="Optional CSV with columns x,y and mag_bin (e.g., from photometry); writes magnitude_analysis.json",
+    )
     p.add_argument("--out", required=True, help="Output directory")
     p.add_argument("--width", type=int, default=None, help="Image width in pixels (optional if in CSV metadata)")
     p.add_argument("--height", type=int, default=None, help="Image height in pixels")
@@ -152,6 +157,24 @@ def main(argv: Optional[list[str]] = None) -> int:
         },
     }
     (out_dir / "spatial_statistics_analysis.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    if args.magnitude_bins:
+        mdf = pd.read_csv(args.magnitude_bins)
+        if not {"x", "y", "mag_bin"}.issubset(mdf.columns):
+            raise ValueError("magnitude bins CSV must contain columns x,y,mag_bin")
+
+        out: dict[str, object] = {"bins": {}}
+        for bin_name, g in mdf.groupby("mag_bin"):
+            g_points = g[["x", "y"]].to_numpy(dtype=float)
+            rc_b, xi_b = two_point_correlation_function(g_points, width, height, r_bins, max_points=3500)
+            out["bins"][str(bin_name)] = {
+                "n_points": int(len(g_points)),
+                "r_centers": rc_b.tolist(),
+                "xi_values": xi_b.tolist(),
+                "xi_mean": float(np.nanmean(xi_b)) if len(xi_b) else float("nan"),
+            }
+
+        (out_dir / "magnitude_analysis.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
     return 0
 
 

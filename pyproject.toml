@@ -40,6 +40,7 @@ Repository = "https://github.com/SHayashida/Amanogawa"
 amanogawa-detect = "amanogawa.detection:main"
 amanogawa-stats = "amanogawa.spatial_stats:main"
 amanogawa-band = "amanogawa.band_geometry:main"
+amanogawa-dark = "amanogawa.dark_morphology:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

@@ -120,6 +120,8 @@ provided as tutorials/examples that exercise the library.
 │       ├── detection.py          # LoG detection / threshold sweep
 │       ├── spatial_stats.py      # two-point correlation, box-count, NND
 │       ├── band_geometry.py      # PCA axis + width fitting
+│       ├── photometry.py         # simple aperture photometry + magnitude bins
+│       ├── dark_morphology.py    # dark-lane mask + morphology metrics
 │       └── io.py                 # image I/O helpers
 ├── data/
 │   ├── raw/IMG_5991.jpg          # smartphone sky image (if license permits)
@@ -183,6 +185,13 @@ Notebooks assume this layout.
    amanogawa-band --coords outputs/IMG_5991_star_coords.csv \
        --width 4032 --height 3024 --out outputs/
    ```
+8. Dark morphology (dark-lane mask + morphology metrics):
+   ```bash
+   amanogawa-dark --image data/raw/IMG_5991.jpg --out outputs/dark_morphology/results
+   ```
+   This writes:
+   - `outputs/dark_morphology/results/improved_dark_detection.json`
+   - `outputs/dark_morphology/results/dark_lane_mask.png`
 8. Figures:
    ```bash
    # plotting helpers are currently notebook-driven
@@ -309,6 +318,14 @@ BibTeX:
    note         = {Amanogawa v1.0.0}
 }
 ```
+
+## Data License (Image)
+The repository includes a sample smartphone sky image at `data/raw/IMG_5991.jpg`.
+
+- Copyright: © 2025 Shunya Hayashida (captured by the author)
+- License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+See `DATA_LICENSE.md` for details.
 
 ## License
 MIT

@@ -1,4 +1,5 @@
 [console_scripts]
 amanogawa-band = amanogawa.band_geometry:main
+amanogawa-dark = amanogawa.dark_morphology:main
 amanogawa-detect = amanogawa.detection:main
 amanogawa-stats = amanogawa.spatial_stats:main
