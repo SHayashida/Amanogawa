@@ -7,8 +7,20 @@ __pycache__/
 *.pyd
 .Python
 
+# Packaging/build artifacts
+*.egg-info/
+build/
+dist/
+
 # Jupyter Notebook
 .ipynb_checkpoints/
+
+# Test / lint caches
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.mypy_cache/
 
 # OS generated files
 .DS_Store
@@ -23,18 +35,31 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Paper drafts (keep separate for now)
-paper/
+# Paper build artifacts (keep sources under paper/ tracked)
+paper/*.pdf
+paper/*.tex
+paper/*.docx
+paper/*.rtf
+paper/.latexmk*
 
-# Analysis outputs (keep sample results, ignore new runs)
-outputs/results/*.json
-outputs/figures/*.png
-outputs/*.csv
+# Analysis outputs (ignore generated artefacts; keep only curated Zenodo samples)
+outputs/**/results/*
+outputs/**/figures/*
+outputs/**/*.png
+outputs/**/*.csv
+outputs/**/*.json
 
-# Keep the sample outputs for Zenodo publication
-!outputs/results/sample_*
-!outputs/figures/sample_*
+# Keep curated README files in outputs
+!outputs/README.md
+!outputs/**/README.md
+
+# Keep curated master summary
+!outputs/ANALYSIS_MASTER_SUMMARY.json
+
+# Keep sample outputs for Zenodo publication
 !outputs/sample_*
+!outputs/**/results/sample_*
+!outputs/**/figures/sample_*
 
 # Large temporary files
 *.tmp
