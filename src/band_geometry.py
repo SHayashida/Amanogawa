@@ -1,4 +1,9 @@
-"""Milky Way band geometry (axis + width) placeholder."""
+"""Legacy module kept for backward compatibility.
 
-def compute_band_geometry(coords_csv: str, out_dir: str):
-    pass
+The core implementation lives in :mod:`amanogawa.band_geometry`.
+"""
+
+from __future__ import annotations
+
+from amanogawa.band_geometry import *  # noqa: F401,F403
+

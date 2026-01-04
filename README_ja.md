@@ -63,5 +63,7 @@
 ## License
 (英語版参照)
 
+補足: コア実装は `src/amanogawa/`（pipでインストール可能）にあり、`notebooks/` はチュートリアル/例として位置づけています。
+
 ## Contact
 Shunya Hayashida (https://x.com/HayashidaLynda)

@@ -1,4 +1,9 @@
-"""Star detection and threshold sweep utilities (placeholder)."""
+"""Legacy module kept for backward compatibility.
 
-def run_detection(image_path: str, out_dir: str):
-    pass
+The core implementation lives in :mod:`amanogawa.detection`.
+"""
+
+from __future__ import annotations
+
+from amanogawa.detection import *  # noqa: F401,F403
+

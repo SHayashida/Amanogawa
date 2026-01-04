@@ -1,0 +1,2 @@
+# Treat notebooks as documentation so GitHub language stats reflect the core library.
+notebooks/** linguist-documentation

@@ -1,3 +1,51 @@
+Metadata-Version: 2.4
+Name: amanogawa
+Version: 0.1.0
+Summary: Quantify Milky Way stellar clustering & dark lane morphology from a single image
+Author: Shunya Hayashida
+License: MIT License
+        
+        Copyright (c) 2026 Shunya Hayashida
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/SHayashida/Amanogawa
+Project-URL: Repository, https://github.com/SHayashida/Amanogawa
+Requires-Python: <3.13,>=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy==1.26.4
+Requires-Dist: scipy==1.13.1
+Requires-Dist: scikit-image==0.24.0
+Requires-Dist: pandas==2.2.2
+Requires-Dist: matplotlib==3.9.0
+Requires-Dist: astropy==6.1.0
+Requires-Dist: scikit-learn==1.5.1
+Requires-Dist: photutils==1.11.0
+Requires-Dist: pyyaml==6.0.1
+Requires-Dist: pillow>=10.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: pytest-cov>=5; extra == "dev"
+Requires-Dist: ruff>=0.5; extra == "dev"
+Dynamic: license-file
+
 <!-- NOTE: Japanese version has been moved to README_ja.md -->
 # Amanogawa: Quantifying Milky Way Stellar Clustering & Dark Lane Morphology from a Single Smartphone Exposure
 

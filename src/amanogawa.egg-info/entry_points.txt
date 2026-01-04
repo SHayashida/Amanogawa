@@ -1,0 +1,4 @@
+[console_scripts]
+amanogawa-band = amanogawa.band_geometry:main
+amanogawa-detect = amanogawa.detection:main
+amanogawa-stats = amanogawa.spatial_stats:main
