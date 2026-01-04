@@ -1,297 +1,127 @@
-<!-- NOTE: Japanese version has been moved to README_ja.md -->
-# Amanogawa: Quantifying Milky Way Stellar Clustering & Dark Lane Morphology from a Single Smartphone Exposure
+<!-- NOTE: Japanese version lives in README_ja.md -->
+# Amanogawa
+
+Quantifying Milky Way stellar clustering and dark-lane morphology from a single smartphone exposure.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
-[![Reproducibility](https://img.shields.io/badge/Reproducible-Yes-blue.svg)](#reproducibility-workflow)
-[![Status](https://img.shields.io/badge/Status-Alpha-orange.svg)]()
-[![Colab: Dark Analysis](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/02_dark_morphology.ipynb)
-[![Colab: Band Geometry](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
 
-<!-- If the repository is private the Colab links above will fail. Make the repo public or adjust branch/path if renamed. -->
+[Open in Colab: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
 
-> Environment: Tested & recommended with **Python 3.12.x**. Avoid 3.13 for now (SciPy <1.14 wheels missing → source build requires Fortran). Use `pyenv install 3.12.5 && pyenv local 3.12.5` or system 3.12, then create the virtual environment.
+[Open in Colab: Dark Morphology](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/02_dark_morphology.ipynb)
 
 English | [日本語 / Japanese](./README_ja.md)
 
-## Overview
-This repository demonstrates how a *single consumer smartphone long‑exposure* Milky Way image can yield:
+## Statement of need
 
-1. Stellar spatial clustering metrics (two‑point correlation function \(\xi(r)\), nearest‑neighbour distribution, box‑count / fractal dimension \(D\)).
-2. Milky Way band & dark lane (dust lane) morphology: principal axis, multi‑model width (Gaussian & Lorentzian), and a normalized intensity deficit (NID) tracing absorption contrast.
+Wide-field Milky Way images (including consumer smartphone long exposures) contain measurable structure: clustered stellar fields and dust-driven dark lanes. Amanogawa provides a compact, reproducible pipeline that extracts quantitative metrics (clustering statistics, principal-axis/width estimates, and dark-lane morphology) from a single image to support citizen-science workflows and lightweight scientific exploration.
 
-The scientific motivation is to lower the barrier for quantitative Galactic structure exploration to a citizen‑science friendly data source while still preserving methodological rigor.
+## What is included
 
-> Hayashida, S. (2025). *Quantifying Clustering and Dark Lane / Band Morphology of the Milky Way from a Single Smartphone Exposure.* (In preparation)
+- **Core library:** installable Python package under `src/amanogawa/`.
+- **CLIs:** entry points for the main steps (`amanogawa-*`).
+- **Notebooks:** tutorials under `notebooks/` that exercise the library and reproduce figures.
+- **JOSS paper:** `paper/paper.md` (+ `paper/paper.bib`).
 
-### Dual Perspective from One Image
-| Aspect | Derived Metrics | Scientific Signal |
-|--------|-----------------|-------------------|
-| Stellar Clustering | \(\xi(r)\), NND PDF, fractal dimension \(D\) | Hierarchical structure, dissolved cluster remnants |
-| Band Geometry | Principal axis angle, FWHM (Gaussian / Lorentzian) | Projected width vs atmospheric / optical smoothing |
-| Dark Lane Contrast | Normalized intensity deficit profile | Relative dust column variation (qualitative) |
-| Magnitude-Stratified Clustering | Bright / mid / faint tercile \(\xi(r)\) + bootstrap CI | Scale dependence with luminosity selection |
+## Installation
 
-The dark lane module operates in the same transformed PCA coordinate frame as clustering, enabling cross‑scale comparison between extinction structure and stellar correlation features.
+> Tested & recommended with **Python 3.12.x**. Avoid 3.13 for now.
 
-## Key Features
-- Single-image end‑to‑end pipeline (no stacking required)
-- Colab‑first reproducibility; zero local install required to explore
-- Threshold sweep robustness diagnostics for detection biases
-- Magnitude‑stratified clustering with bootstrap confidence intervals
-- Dual profile (Gaussian + Lorentzian) band width estimation (core vs wings)
-- Dark lane normalized intensity deficit (NID) metric in shared geometry frame
-- Modular architecture: swap detection, correlation estimators (e.g., Landy–Szalay)
-- Ready for citizen‑science workshops / teaching demonstrations
-- Integrated astronomical validity notebook consolidating cross‑checks across pipelines
-
-## Repository Structure
-Core library code lives under `src/amanogawa/` (installable via pip). The notebooks are
-provided as tutorials/examples that exercise the library.
-
-```
-├── notebooks/                        # Analysis notebooks
-│   ├── 01_band_analysis.ipynb        # Band geometry + stellar clustering pipeline
-│   ├── 02_dark_morphology.ipynb      # Dark lane morphology & structural analysis
-│   ├── 03_astronomical_validity.ipynb# Integrated cross-pipeline validation dashboard
-│   └── backup/                       # Backup versions
-├── data/
-│   └── raw/
-│       └── IMG_5991.jpg              # Original smartphone image
-├── outputs/
-│   ├── figures/                      # Generated figures (ignored by git)
-│   │   ├── sample_star_distribution.png    # Sample output (kept for Zenodo)
-│   │   ├── sample_density_map.png          # Sample output (kept for Zenodo)
-│   │   └── FigA_ROI_mask.png               # Analysis regions
-│   ├── results/                      # Numerical outputs (ignored by git)
-│   │   ├── sample_analysis_summary.json    # Sample output (kept for Zenodo)
-│   │   ├── sample_detection_summary.json   # Sample output (kept for Zenodo)
-│   │   └── dark_morphology_summary.json
-│   └── sample_star_coords.csv        # Sample stellar positions (kept for Zenodo)
-├── src/
-│   └── amanogawa/                # Core Python package (library)
-│       ├── detection.py          # LoG detection / threshold sweep
-│       ├── spatial_stats.py      # two-point correlation, box-count, NND
-│       ├── band_geometry.py      # PCA axis + width fitting
-│       ├── photometry.py         # simple aperture photometry + magnitude bins
-│       ├── dark_morphology.py    # dark-lane mask + morphology metrics
-│       └── io.py                 # image I/O helpers
-├── data/
-│   ├── raw/IMG_5991.jpg          # smartphone sky image (if license permits)
-│   ├── raw/IMG_5991_wcs.fits     # (truncated) WCS solution (optional)
-│   ├── interim/                  # intermediate serialized objects
-│   └── processed/                # final derived CSV / JSON outputs
-├── outputs/
-│   ├── figures/TaskA.png
-│   ├── figures/TaskB.png
-│   ├── figures/Two_point_correlation.png
-│   ├── figures/Box_count_scaling.png
-│   ├── figures/NND.png
-│   ├── IMG_5991_star_coords.csv
-│   ├── threshold_sweep_summary.csv
-│   └── band_width_fit_summary.json
-├── paper/                        # JOSS paper sources
-│   ├── paper.md
-│   ├── paper.bib
-│   └── CITATION.cff
-├── pyproject.toml                # Packaging (pip installable)
-├── requirements.txt
-└── README.md
-```
-Notebooks assume this layout.
-
-## Quick Start
-### A. Google Colab (fastest)
-1. Open `notebooks/02_dark_morphology.ipynb` or `notebooks/01_band_analysis.ipynb` in Colab.
-2. Upload your Milky Way image to `data/raw/` in the Colab session.
-3. Run cells top‑to‑bottom (detection → threshold sweep → clustering → band & dark lane morphology).
-4. Artifacts appear under `outputs/` (CSV / JSON / PNG).
-5. Optional: launch `notebooks/03_astronomical_validity.ipynb` in Colab to run the consolidated astronomical validity dashboard using the newly generated outputs.
-
-### B. Local Execution
-1. Clone repo.
-2. Create virtual environment & install dependencies.
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate
-   pip install -e .
-   ```
-3. Place image in `data/raw/`.
-4. Detection + threshold sweep:
-   ```bash
-   amanogawa-detect --image data/raw/IMG_5991.jpg --out outputs/ \
-       --threshold-min 0.03 --threshold-max 0.08 --steps 10
-   ```
-5. Spatial statistics:
-   ```bash
-   amanogawa-stats --coords outputs/IMG_5991_star_coords.csv --out outputs/
-   ```
-6. Magnitude‑stratified clustering:
-   ```bash
-   python -m src.photometry --image data/raw/IMG_5991.jpg \
-       --coords outputs/IMG_5991_star_coords.csv --out outputs/
-   python -m src.spatial_stats --coords outputs/IMG_5991_star_coords.csv \
-       --magnitude-bins outputs/magnitude_bins.csv --out outputs/
-   ```
-7. Band geometry + dark lane contrast:
-   ```bash
-   amanogawa-band --coords outputs/IMG_5991_star_coords.csv \
-       --width 4032 --height 3024 --out outputs/
-   ```
-8. Dark morphology (dark-lane mask + morphology metrics):
-   ```bash
-   amanogawa-dark --image data/raw/IMG_5991.jpg --out outputs/dark_morphology/results
-   ```
-   This writes:
-   - `outputs/dark_morphology/results/improved_dark_detection.json`
-   - `outputs/dark_morphology/results/dark_lane_mask.png`
-8. Figures:
-   ```bash
-   # plotting helpers are currently notebook-driven
-   ```
-9. Integrated validity (optional but recommended): open `notebooks/03_astronomical_validity.ipynb` to aggregate the exported summaries and produce the pass/fail scorecard.
-
-## Integrated Astronomical Validity Notebook
-- **Purpose:** Aggregates outputs from `01_band_analysis.ipynb` and `02_dark_morphology.ipynb` to confirm that stellar, geometric, and dark-lane metrics are mutually consistent.
-- **Inputs:** Reads JSON/CSV artifacts already stored in `outputs/`, so no reprocessing is required.
-- **Outputs:** Weighted scorecard (`consistency_df`) and visual pass/fail dashboard saved under `outputs/dark_morphology/figures/`.
-- **Usage:** Run after either notebook to sanity-check results before drafting manuscripts or sharing citizen-science findings.
-
-## Dependencies
-Recommended baseline (pin exact versions for reproducibility when finalizing Zenodo DOI):
-```
-python >= 3.10
-numpy
-scipy
-scikit-image
-pandas
-matplotlib
-astropy
-scikit-learn   # (optional for PCA; otherwise use numpy.linalg)
-photutils      # (optional: more robust photometry)
-pyyaml         # (config handling, optional)
-```
-Create `requirements.txt` (example):
-```
-numpy==1.26.4
-scipy==1.13.1
-scikit-image==0.24.0
-pandas==2.2.2
-matplotlib==3.9.0
-astropy==6.1.0
-scikit-learn==1.5.1
-photutils==1.11.0
-pyyaml==6.0.1
-```
-Install:
 ```bash
 python -m venv .venv
 source .venv/bin/activate
+
 pip install -e .
 ```
 
-## Reproducibility Workflow
-1. Detection & threshold sweep → `IMG_5991_star_coords.csv`, `threshold_sweep_summary.csv`
-2. Spatial stats → correlation, NND, fractal dimension
-3. Magnitude binning & bootstrap clustering
-4. Band axis & width (Gaussian / Lorentzian) + dark lane normalized intensity deficit profile
-5. Plot + aggregate → figures & summary JSON
-6. (Optional) provenance export: `outputs/run_metadata.yaml`
-7. Integrated cross-check: run `notebooks/03_astronomical_validity.ipynb` to verify star/dust metrics and generate the weighted validity scorecard
+For development (tests/lint):
 
-## Method Notes
-- Detection: Laplacian‑of‑Gaussian + threshold sweep to locate stability plateau (avoid under/over detection bias)
-- Two‑point correlation: baseline \(DD/RR - 1\); future: Landy–Szalay with edge correction
-- Fractal dimension: log–log box count regression slope
-- Dark lane: extract perpendicular strips in PCA frame → robust (median) background → normalized intensity deficit ( (background − signal)/background )
-- Band width: fit Gaussian + Lorentzian to separate core concentration vs broader scattered wings
-- Angular calibration: approximate WCS (astrometry.net) — treat angles as provisional
-
-## Outputs & Files
-| File | Description |
-|------|-------------|
-| `sample_star_coords.csv` | Sample detected star positions (x, y, radius) |
-| `sample_analysis_summary.json` | Complete analysis results sample |
-| `sample_star_distribution.png` | Sample star distribution visualization |
-| `sample_density_map.png` | Sample density map visualization |
-| `threshold_sweep_summary.csv` | Threshold sensitivity analysis results |
-| `band_width_fit_summary.json` | Axis angle, Gaussian/Lorentzian FWHM metrics |
-| `Two_point_correlation.png` | Full-sample ξ(r) function |
-| `Fractal_dimension_plot.png` | Box counting method scaling |
-| `Nearest_neighbor_distribution.png` | NND probability distribution |
-
-**Note:** The `outputs/` directory contains sample results for Zenodo publication. When running analyses, new outputs are generated but ignored by git (.gitignore), preserving the sample files for reproducibility.
-
-## Quality & Validation
-- Internal assertions (recommended):
-  - Star coordinate array non-empty and within image bounds.
-  - Monotonic decrease of detection counts with threshold.
-  - Positive mean ξ across thresholds (warn if not).
-  - PCA axis reproducibility under bootstrap (angle dispersion < chosen tolerance).
-- Add lightweight unit tests under `tests/` (e.g., pytest) for math utilities.
-
-## Extending
-- Replace LoG with PSF fitting (DAOStarFinder) for faint star completeness
-- Landy–Szalay / Ripley K for bias reduction & variance diagnostics
-- Cross‑correlate dark lane contrast vs clustering scale
-- Multi‑epoch / varying light‑pollution comparative meta‑analysis
-
-## FAQ
-**Q:** Do I need WCS?  
-**A:** Only for angular conversions; pixel‑space analysis works without it.
-
-**Q:** Light pollution impact on dark lane metrics?  
-**A:** Robust background estimation mitigates moderate gradients; extreme skyglow still reduces S/N.
-
-**Q:** Use another smartphone image?  
-**A:** Yes—drop it in `data/raw/`, re‑tune detection thresholds if optics / exposure differ.
-
-## Contributing
-Pull requests are welcome. Please:
-1. Open an issue describing proposed changes.
-2. Adhere to existing code style (PEP8; run `ruff` or `flake8` if configured).
-3. Include tests for new analytic functions.
-4. Update README / docs if behavior changes.
-
-## Citation
-Update DOI after Zenodo release.
-
-Plain text:
-Hayashida, S. (2025). Quantifying clustering and dark lane / band morphology of the Milky Way from a single smartphone exposure. Zenodo. https://doi.org/10.5281/zenodo.xxxxxxx
-
-BibTeX:
-```bibtex
-@misc{hayashida2025amanogawa,
-   author       = {Hayashida, Shunya},
-   title        = {Quantifying Clustering and Dark Lane / Band Morphology of the Milky Way from a Single Smartphone Exposure},
-   year         = {2025},
-   publisher    = {Zenodo},
-   doi          = {10.5281/zenodo.xxxxxxx},
-   url          = {https://doi.org/10.5281/zenodo.xxxxxxx},
-   note         = {Amanogawa v1.0.0}
-}
+```bash
+pip install -e ".[dev]"
 ```
 
-## Data License (Image)
-The repository includes a sample smartphone sky image at `data/raw/IMG_5991.jpg`.
+## Quick start (CLI)
 
-- Copyright: © 2025 Shunya Hayashida (captured by the author)
-- License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+Place an image in `data/raw/` (the repository ships `data/raw/IMG_5991.jpg`).
+
+1. Star detection (writes coordinates CSV + threshold sweep summaries):
+
+```bash
+amanogawa-detect --image data/raw/IMG_5991.jpg --out outputs/ \
+  --threshold-min 0.03 --threshold-max 0.08 --steps 10
+```
+
+1. Spatial statistics (two-point correlation, NND, box-count fractal dimension):
+
+```bash
+amanogawa-stats --coords outputs/IMG_5991_star_coords.csv --out outputs/
+```
+
+1. Band geometry (principal axis + Gaussian/Lorentzian width fits):
+
+```bash
+amanogawa-band --coords outputs/IMG_5991_star_coords.csv --width 4032 --height 3024 --out outputs/
+```
+
+1. Dark morphology (dark-lane mask + morphology metrics):
+
+```bash
+amanogawa-dark --image data/raw/IMG_5991.jpg --out outputs/dark_morphology/results
+```
+
+This writes:
+
+- `outputs/dark_morphology/results/improved_dark_detection.json`
+- `outputs/dark_morphology/results/dark_lane_mask.png`
+
+## Notebooks
+
+The notebooks are tutorial-style drivers:
+
+- `notebooks/01_band_analysis.ipynb`: band geometry + clustering pipeline
+- `notebooks/02_dark_morphology.ipynb`: dark-lane morphology pipeline
+- `notebooks/03_astronomical_validity.ipynb`: integrated cross-checks using exported `outputs/`
+
+They are intentionally not the “core implementation”; the reusable code lives in `src/amanogawa/`.
+
+## Tests and code quality
+
+Run unit tests:
+
+```bash
+pytest
+```
+
+Run lint:
+
+```bash
+ruff check src tests
+```
+
+CI runs lint + tests on push/PR.
+
+## Citation
+
+JOSS paper sources: `paper/paper.md` and `paper/paper.bib`.
+
+If you use this software before a DOI is minted, cite the repository and/or the included paper draft. After Zenodo release, update this section with the DOI.
+
+## Data license (image)
+
+This repository includes a sample smartphone sky image at `data/raw/IMG_5991.jpg`.
+
+- Copyright: © 2025 Shunya Hayashida
+- License: CC BY 4.0
 
 See `DATA_LICENSE.md` for details.
 
 ## License
-MIT
 
-## Zenodo Deposition Checklist
-1. Push all final code & data to a tagged GitHub release (e.g., `v1.0.0`).
-2. Enable GitHub–Zenodo integration (first time only) and re‑create the release to trigger DOI.
-3. Update the DOI badge and BibTeX entry here with the minted DOI.
-4. Upload any large files (>100 MB) directly in Zenodo if they cannot be committed.
-5. Freeze `requirements.txt` with exact versions (use `pip freeze > requirements.txt`).
-6. (Optional) Add an `environment.yml` (Conda) or `uv.lock`/`poetry.lock` for fully pinned reproducibility.
+Software is released under the MIT License (see `LICENSE`).
+
+## Contributing
+
+See `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`.
 
 ## Contact
-Questions / suggestions: 1720067169@campus.ouj.ac.jp (Shunya Hayashida)
 
----
-*Prepared for transparent citizen‑science reproducibility and archival on Zenodo.*
+Questions/suggestions: [1720067169@campus.ouj.ac.jp](mailto:1720067169@campus.ouj.ac.jp) (Shunya Hayashida)

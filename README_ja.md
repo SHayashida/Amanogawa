@@ -1,69 +1,124 @@
-# Amanogawa: 単一スマホ長時間露光 1 枚から星クラスタリングと天の川暗黒帯を同時解析するリポジトリ
+<!-- NOTE: English README.md is canonical. / 英語版 README.md を正とします -->
+# Amanogawa（日本語）
 
-(この日本語版 README は英語版 README.md の元になった内容です。最新の更新は英語版を参照してください / English version is canonical.)
-
-<!-- 以下、以前の日本語混在 README 内容を保持 -->
+単一のスマホ長時間露光 1 枚から、天の川の星クラスタリングと暗黒帯（ダークレーン）形状を定量化します。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 
-## Overview / 概要
-このプロジェクトは「スマートフォンで撮ったたった1枚の天の川画像」から、以下の2つの視点を統合的に量的評価する再現可能ワークフローです。
+[Colab で開く: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
 
-1. 星の空間クラスタリング（2 点相関関数 / 近傍距離 / フラクタル次元）
-2. 天の川バンド（スターブリッジ）と暗黒帯（ダークレーン）の幾何・濃淡構造（主軸・幅・減光コントラスト指標）
+[Colab で開く: Dark Morphology](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/02_dark_morphology.ipynb)
 
-従来は広視野 CCD や複数フレームを要する解析を、あえて「市販スマホ夜景モード長時間露光 1 枚」に制約し、市民科学レベルでも到達可能な研究的深度を示します。
+## Statement of need（必要性）
 
-> Hayashida, S. (2025). *Quantifying Clustering and Dark Lane / Band Morphology of the Milky Way from a Single Smartphone Exposure.* (In prep.)
+広視野の天の川画像（スマホ夜景モードの長時間露光を含む）には、星の空間構造（クラスタリング）と星間ダストによる暗黒帯が同時に写り込みます。Amanogawa は、1 枚の画像からクラスタリング統計・主軸/幅推定・暗黒帯マスク/形態指標を再現可能に抽出するためのコンパクトなパイプラインを提供し、市民科学や教育用途でも実行できる分析導線を整えます。
 
-### 1 枚画像で何が“同時”にわかるか
-| 観点 | 取得指標 | 科学的含意 |
-|------|----------|-------------|
-| 星クラスタリング | 2 点相関関数 \(\xi(r)\), 最近傍距離分布, ボックスカウント次元 \(D\) | 星形成・散開星団残骸の階層性ヒント |
-| バンド形状 | 主軸角, ガウシアン / ローレンツィアン FWHM | 天の川投影幅・撮影条件による拡散度 |
-| 暗黒帯 (ダークレーン) | コントラストプロファイル, ローカル減光指標 (Normalized Intensity Deficit) | 星間ダスト濃淡の相対トレース |
-| 輝度階層クラスタリング | 明/中/暗（輝度 tercile）別 \(\xi(r)\) とブートストラップ CI | 明るい星優勢スケール vs 微弱星分布差 |
+## What is included（構成）
 
-暗黒帯解析では、主軸直交方向の輝度プロファイルから「星密度 + 背景輝度」を分離し、コントラスト正規化した減光深度 (contrast depth) を推定します。星クラスタリングと同じ座標系を共有することで、どのスケールで減光構造が相関するかを比較可能にします。
+- **コアライブラリ:** `src/amanogawa/`（pip インストール可能）
+- **CLI:** `amanogawa-*` のコマンド群
+- **ノートブック:** `notebooks/`（チュートリアル/再現用）
+- **JOSS 原稿:** `paper/paper.md`（+ `paper/paper.bib`）
 
-## Key Features / 特徴
-- スマホ画像 1 枚から「星分布統計 + 暗黒帯濃淡」まで一気通貫
-- Colab ベースで誰でも再現：GPU / 専用天文機材不要
-- 閾値スイープで検出ロバスト性を検証（過小 / 過検出の系統誤差を可視化）
-- 輝度階層別クラスタリングにブートストラップ CI を付与
-- バンド幅：ガウシアン + ローレンツィアン両フィットでコアとウィングを分離
-- 暗黒帯：正規化輝度欠損 (Normalized Intensity Deficit) プロファイル指標
-- 解析ステップはモジュール化（検出器・相関推定器を差し替え可能）
-- 研究／教育／市民科学ワークショップ教材として再利用容易
+## Installation（インストール）
 
-## Repository Structure / 現在の構成
-(英語版参照)
+> 動作確認・推奨は **Python 3.12.x**。現状 3.13 は避けてください。
 
-## Quick Start / 使い方
-(英語版参照)
+```bash
+python -m venv .venv
+source .venv/bin/activate
 
-## Workflow / 処理フロー
-(英語版参照)
+pip install -e .
+```
 
-## Method Notes / 手法メモ
-(英語版参照)
+開発用（テスト/ruff）:
 
-## Outputs & Files / 生成物
-(英語版参照)
+```bash
+pip install -e ".[dev]"
+```
 
-## Extending / 拡張案
-(英語版参照)
+## Quick start（CLI）
 
-## FAQ
-(英語版参照)
+`data/raw/` に画像を置いて実行します（リポジトリには `data/raw/IMG_5991.jpg` が同梱されています）。
 
-## Citation / 引用
-(英語版参照)
+1. 星検出（座標 CSV と閾値スイープの要約を出力）:
+
+```bash
+amanogawa-detect --image data/raw/IMG_5991.jpg --out outputs/ \
+  --threshold-min 0.03 --threshold-max 0.08 --steps 10
+```
+
+1. 空間統計（2 点相関・最近傍距離・ボックスカウント次元など）:
+
+```bash
+amanogawa-stats --coords outputs/IMG_5991_star_coords.csv --out outputs/
+```
+
+1. バンド幾何（主軸推定 + ガウス/ローレンツ幅フィット）:
+
+```bash
+amanogawa-band --coords outputs/IMG_5991_star_coords.csv --width 4032 --height 3024 --out outputs/
+```
+
+1. 暗黒帯形態（暗黒帯マスク + 形態メトリクス）:
+
+```bash
+amanogawa-dark --image data/raw/IMG_5991.jpg --out outputs/dark_morphology/results
+```
+
+出力例:
+
+- `outputs/dark_morphology/results/improved_dark_detection.json`
+- `outputs/dark_morphology/results/dark_lane_mask.png`
+
+## Notebooks（ノートブック）
+
+ノートブックはチュートリアルとして提供しています（実装の本体は `src/amanogawa/`）。
+
+- `notebooks/01_band_analysis.ipynb`: バンド幾何 + クラスタリング
+- `notebooks/02_dark_morphology.ipynb`: 暗黒帯形態解析
+- `notebooks/03_astronomical_validity.ipynb`: `outputs/` を読み込む統合クロスチェック
+
+## Tests and code quality（テスト/品質）
+
+テスト:
+
+```bash
+pytest
+```
+
+Lint:
+
+```bash
+ruff check src tests
+```
+
+CI でも lint + tests を実行します。
+
+## Citation（引用）
+
+JOSS 原稿ソース: `paper/paper.md` と `paper/paper.bib`。
+
+Zenodo DOI 発行後は、英語版 README.md の Citation 節を更新してください。
+
+## Data license（画像データ）
+
+`data/raw/IMG_5991.jpg`（サンプルのスマホ天体写真）:
+
+- Copyright: © 2025 Shunya Hayashida
+- License: CC BY 4.0
+
+詳細は `DATA_LICENSE.md` を参照してください。
 
 ## License
-(英語版参照)
 
-補足: コア実装は `src/amanogawa/`（pipでインストール可能）にあり、`notebooks/` はチュートリアル/例として位置づけています。
+ソフトウェアは MIT License です（`LICENSE` を参照）。
+
+## Contributing
+
+`CONTRIBUTING.md` と `CODE_OF_CONDUCT.md` を参照してください。
 
 ## Contact
-Shunya Hayashida (https://x.com/HayashidaLynda)
+
+- Shunya Hayashida: [1720067169@campus.ouj.ac.jp](mailto:1720067169@campus.ouj.ac.jp)
+- X: [https://x.com/HayashidaLynda](https://x.com/HayashidaLynda)
