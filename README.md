@@ -52,12 +52,16 @@ Inside the container:
 ```bash
 # 1. Install system packages required for building
 apt-get update
-apt-get install -y gcc g++ build-essential python3-dev
+apt-get install -y gcc g++ build-essential python3-dev git
 
-# 2. Install photutils separately to avoid build failures
+# 2. Clone the repository
+git clone https://github.com/SHayashida/Amanogawa.git
+cd Amanogawa
+
+# 3. Install photutils separately to avoid build failures
 pip install --no-cache-dir photutils
 
-# 3. Continue with installation
+# 4. Continue with installation
 pip install -r requirements.txt
 pip install -e .
 ```
