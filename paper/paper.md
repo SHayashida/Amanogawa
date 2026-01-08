@@ -33,6 +33,8 @@ For clustering analysis, Amanogawa computes the two-point correlation function �
 
 For Milky Way band morphology, Amanogawa estimates the band principal axis from a source-density representation (via a PCA-style axis estimate) [@pedregosa2011sklearn] and measures the perpendicular band width by fitting smooth profile families (Gaussian and Lorentzian), capturing both core width and heavy-tail behaviour. When a plate scale is available (e.g., via WCS metadata used in the analysis), widths can be reported in angular units for cross-image comparison; otherwise, pixel units remain valid for within-image and relative analyses [@astropy2022; @lang2010astrometrynet].
 
+While smartphone optics introduce geometric distortions, Amanogawa focuses on extracting internal relative consistencies. Future versions will support distortion correction via standard WCS headers if provided.
+
 The workflow was demonstrated on a single 30 s smartphone exposure, producing stable summary outputs across a detection-threshold sweep (including consistently positive ξ(r) over the tested range) and band-width estimates on the order of 12–18° depending on the profile model. While these values are presented as an example of the pipeline’s quantitative outputs rather than as definitive astrophysical claims, they illustrate the type of reproducible, parameter-aware measurement Amanogawa enables. By packaging these steps into a reusable library and standardized artefacts, Amanogawa lowers the barrier for small research projects, classroom labs, and scalable citizen-science campaigns based on accessible, single-exposure imagery.
 # Example Output
 
