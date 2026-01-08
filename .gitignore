@@ -61,6 +61,9 @@ outputs/**/*.json
 !outputs/**/results/sample_*
 !outputs/**/figures/sample_*
 
+# Keep example visualization for README/paper
+!outputs/star_detection_overlay.png
+
 # Large temporary files
 *.tmp
 *.log
