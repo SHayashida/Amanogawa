@@ -34,7 +34,13 @@ For clustering analysis, Amanogawa computes the two-point correlation function �
 For Milky Way band morphology, Amanogawa estimates the band principal axis from a source-density representation (via a PCA-style axis estimate) [@pedregosa2011sklearn] and measures the perpendicular band width by fitting smooth profile families (Gaussian and Lorentzian), capturing both core width and heavy-tail behaviour. When a plate scale is available (e.g., via WCS metadata used in the analysis), widths can be reported in angular units for cross-image comparison; otherwise, pixel units remain valid for within-image and relative analyses [@astropy2022; @lang2010astrometrynet].
 
 The workflow was demonstrated on a single 30 s smartphone exposure, producing stable summary outputs across a detection-threshold sweep (including consistently positive ξ(r) over the tested range) and band-width estimates on the order of 12–18° depending on the profile model. While these values are presented as an example of the pipeline’s quantitative outputs rather than as definitive astrophysical claims, they illustrate the type of reproducible, parameter-aware measurement Amanogawa enables. By packaging these steps into a reusable library and standardized artefacts, Amanogawa lowers the barrier for small research projects, classroom labs, and scalable citizen-science campaigns based on accessible, single-exposure imagery.
+# Example Output
 
+The figure below shows an example output from the star detection pipeline, with detected point sources overlaid on the original smartphone image:
+
+![Star detection results showing detected point sources overlaid on a smartphone Milky Way image.](../outputs/star_detection_overlay.png)
+
+This visualization is automatically generated using the `--plot-output` flag in the `amanogawa-detect` CLI tool, providing immediate visual feedback on detection quality and enabling quick assessment of detection parameters.
 # Acknowledgements
 Amanogawa is built on the scientific Python ecosystem. The author thanks the maintainers and contributors of the open-source libraries that make this work possible, including NumPy [@harris2020numpy], SciPy [@virtanen2020scipy], scikit-image [@vanderwalt2014scikitimage], Astropy and Photutils [@astropy2022; @photutils1110], and the broader data/visualization stack used to produce the exported artefacts and figures.
 

@@ -20,6 +20,69 @@ class DetectionConfig:
     threshold: float = 0.05
 
 
+def plot_star_overlay(
+    image_path: str | Path,
+    coords_df: pd.DataFrame,
+    output_path: str | Path,
+    *,
+    marker_size: float = 50,
+    marker_color: str = "red",
+    marker_alpha: float = 0.6,
+) -> None:
+    """Create and save a visualization of detected stars overlaid on the image.
+
+    Parameters
+    ----------
+    image_path : str | Path
+        Path to the original image file.
+    coords_df : pd.DataFrame
+        DataFrame with 'x' and 'y' columns for star coordinates.
+    output_path : str | Path
+        Path where the output PNG/JPG will be saved.
+    marker_size : float, optional
+        Size of the markers for detected stars, by default 50.
+    marker_color : str, optional
+        Color of the markers, by default "red".
+    marker_alpha : float, optional
+        Transparency of the markers (0-1), by default 0.6.
+    """
+    import matplotlib.pyplot as plt
+    from PIL import Image
+
+    # Load original image
+    img = Image.open(Path(image_path))
+
+    # Create figure
+    fig, ax = plt.subplots(figsize=(12, 8), dpi=150)
+    ax.imshow(img, cmap="gray" if img.mode == "L" else None)
+
+    # Overlay detected stars
+    if len(coords_df) > 0:
+        ax.scatter(
+            coords_df["x"],
+            coords_df["y"],
+            s=marker_size,
+            c=marker_color,
+            alpha=marker_alpha,
+            edgecolors="white",
+            linewidths=0.5,
+            label=f"{len(coords_df)} stars detected",
+        )
+        ax.legend(loc="upper right", fontsize=10, framealpha=0.8)
+
+    ax.set_xlabel("X (pixels)", fontsize=10)
+    ax.set_ylabel("Y (pixels)", fontsize=10)
+    ax.set_title("Star Detection Results", fontsize=12, fontweight="bold")
+    ax.grid(False)
+
+    # Save figure
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
+
 def detect_stars_log(
     image: np.ndarray,
     *,
@@ -106,6 +169,7 @@ def _build_parser() -> argparse.ArgumentParser:
     p.add_argument("--threshold-min", type=float, default=None)
     p.add_argument("--threshold-max", type=float, default=None)
     p.add_argument("--steps", type=int, default=10)
+    p.add_argument("--plot-output", action="store_true", help="Generate and save a visualization of detected stars")
     return p
 
 
@@ -142,6 +206,10 @@ def main(argv: Optional[list[str]] = None) -> int:
             max_sigma=float(args.max_sigma),
             num_sigma=int(args.num_sigma),
         )
+
+    # Generate visualization if requested
+    if args.plot_output:
+        plot_star_overlay(args.image, df, out_dir / "star_detection_overlay.png")
 
     return 0
 
