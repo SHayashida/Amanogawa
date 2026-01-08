@@ -39,6 +39,38 @@ For development (tests/lint):
 pip install -e ".[dev]"
 ```
 
+### Docker-based installation (for reviewers and verification)
+
+If you encounter build issues on Mac or want a clean environment for verification:
+
+```bash
+docker run -it --rm python:3.10-slim /bin/bash
+```
+
+Inside the container:
+
+```bash
+# 1. Install system packages required for building
+apt-get update
+apt-get install -y gcc g++ build-essential python3-dev
+
+# 2. Install photutils separately to avoid build failures
+pip install --no-cache-dir photutils
+
+# 3. Continue with installation
+pip install -r requirements.txt
+pip install -e .
+```
+
+Verify the installation:
+
+```bash
+cd /  # Move outside the project directory
+python3 -c "import amanogawa; print('Success')"
+```
+
+If you see `Success`, the installation was successful and paths are correctly configured.
+
 ## Quick start (CLI)
 
 Place an image in `data/raw/` (the repository ships `data/raw/IMG_5991.jpg`).
