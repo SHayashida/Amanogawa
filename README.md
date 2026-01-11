@@ -1,7 +1,7 @@
 <!-- NOTE: Japanese version lives in README_ja.md -->
 # Amanogawa
 
-Quantifying Milky Way stellar clustering and dark-lane morphology from a single smartphone exposure.
+Reproducible quantification of Milky Way structure from single-exposure smartphone images.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 [![CI](https://github.com/SHayashida/Amanogawa/actions/workflows/ci.yml/badge.svg)](https://github.com/SHayashida/Amanogawa/actions/workflows/ci.yml)
@@ -14,7 +14,7 @@ English | [日本語 / Japanese](./README_ja.md)
 
 ## Statement of need
 
-Wide-field Milky Way images (including consumer smartphone long exposures) contain measurable structure: clustered stellar fields and dust-driven dark lanes. Amanogawa provides a compact, reproducible pipeline that extracts quantitative metrics (clustering statistics, principal-axis/width estimates, and dark-lane morphology) from a single image to support citizen-science workflows and lightweight scientific exploration.
+Amanogawa is an open-source, MIT-licensed Python package and reproducible workflow for extracting quantitative summaries of Milky Way structure from a single wide-field smartphone long-exposure image. It bridges widely accessible astrophotography and transparent, inspectable measurements suitable for small research projects, education, and citizen-science studies. Analyses are intentionally formulated to remain meaningful even without full astrometric calibration. The workflow supports both interactive notebook use and a command-line interface, producing archival-friendly artifacts (CSV/JSON/PNG) including star catalogs, threshold-sweep summaries, fitted band-width parameters, and diagnostic/publication-quality figures.
 
 ## What is included
 
