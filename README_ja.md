@@ -32,6 +32,29 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
+### Docker ベースのインストール（レビュア向け）
+
+Mac などでビルドに詰まる場合やクリーン環境で検証したい場合:
+
+```bash
+docker run -it --rm python:3.10-slim /bin/bash
+```
+
+コンテナ内で:
+
+```bash
+# 1. 必要なビルド用パッケージ
+apt-get update
+apt-get install -y gcc g++ build-essential python3-dev git
+
+# 2. リポジトリを取得
+git clone https://github.com/SHayashida/Amanogawa.git
+cd Amanogawa
+
+# 3. 依存関係込みでインストール（ruff/pytest を含む dev extras）
+pip install -e ".[dev]"
+```
+
 ## Quick start（CLI）
 
 `data/raw/` に画像を置いて実行します（リポジトリには `data/raw/IMG_5991.jpg` が同梱されています）。
