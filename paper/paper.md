@@ -13,7 +13,7 @@ authors:
 affiliations:
   - name: The Open University of Japan
     index: 1
-date: 2026-01-05
+date: 2026-01-11
 bibliography: paper.bib
 ---
 
@@ -26,6 +26,8 @@ The workflow is designed to be “Colab-first” and to produce archival-friendl
 # Statement of need
 
 Consumer astrophotography and citizen-science observations have become widespread, but common tools for smartphone and hobbyist images primarily target aesthetic outputs (stacking, denoising, stretching) rather than transparent measurement and robustness diagnostics. Conversely, quantitative studies of Galactic structure and stellar clustering often rely on curated survey catalogues and pipelines that assume calibrated instruments and rich metadata. This creates a practical gap: single-exposure images are easy to collect and share, yet difficult to convert into defensible, reproducible summaries of spatial structure and band/dark-lane morphology.
+
+Existing astronomical software such as SExtractor [@bertin1996] and astrometry.net [@lang2010astrometrynet] excel at source detection and astrometric calibration for calibrated telescope data, but are not optimized for the specific workflow of single smartphone exposures without prior astrometry. Photometric and morphological analysis tools like Photutils [@photutils1110] provide excellent building blocks but require users to assemble custom pipelines. Amanogawa fills this niche by providing an integrated, end-to-end workflow specifically designed for accessible, wide-field Milky Way imagery.
 
 Amanogawa addresses this gap by providing an end-to-end pipeline that connects (1) source detection, (2) spatial statistics, and (3) Milky Way band geometry into a coherent and inspectable workflow. For source detection, Amanogawa uses Laplacian-of-Gaussian (LoG) blob detection [@lindeberg1998] (implemented via standard scientific Python image-processing tooling [@vanderwalt2014scikitimage]) and includes an explicit *threshold-sweep* routine that recomputes downstream metrics across a range of detection thresholds. This built-in sensitivity analysis helps users avoid over-interpreting results tied to a single parameter choice and provides a simple, teachable approach to robustness for non-specialists.
 
