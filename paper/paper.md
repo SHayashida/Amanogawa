@@ -53,6 +53,8 @@ This visualization is automatically generated using the `--plot-output` flag in 
 
 Amanogawa is built on the scientific Python ecosystem. The author thanks the maintainers and contributors of the open-source libraries that make this work possible, including NumPy [@harris2020numpy], SciPy [@virtanen2020scipy], scikit-image [@vanderwalt2014scikitimage], Astropy and Photutils [@astropy2022; @photutils1110], and the broader data/visualization stack used to produce the exported artifacts and figures.
 
+The software is archived on Zenodo under DOI [10.5281/zenodo.18213565](https://doi.org/10.5281/zenodo.18213565).
+
 The author welcomes and anticipates future contributions from citizen astronomers and community members who wish to share smartphone observations and join in collaborative analysis of wide-field Milky Way structure.
 
 # AI usage disclosure

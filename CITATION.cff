@@ -10,6 +10,9 @@ repository-code: "https://github.com/SHayashida/Amanogawa"
 license: MIT
 version: 0.1.0
 date-released: "2026-01-11"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.18213565"
 
 preferred-citation:
   type: article

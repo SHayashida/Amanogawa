@@ -4,6 +4,7 @@
 単一のスマホ長時間露光画像から、天の川構造を再現可能に定量化します。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18213565.svg)](https://doi.org/10.5281/zenodo.18213565)
 
 [Colab で開く: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
 

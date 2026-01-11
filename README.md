@@ -5,6 +5,7 @@ Reproducible quantification of Milky Way structure from single-exposure smartpho
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 [![CI](https://github.com/SHayashida/Amanogawa/actions/workflows/ci.yml/badge.svg)](https://github.com/SHayashida/Amanogawa/actions/workflows/ci.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18213565.svg)](https://doi.org/10.5281/zenodo.18213565)
 
 [Open in Colab: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
 
@@ -304,9 +305,21 @@ This generates `paper.pdf` (JOSS-formatted draft) from `paper.md` and `paper.bib
 
 ## Citation
 
-JOSS paper sources: `paper/paper.md` and `paper/paper.bib`.
+If you use Amanogawa in your research, please cite the software:
 
-If you use this software before a DOI is minted, cite the repository and/or the included paper draft. After Zenodo release, update this section with the DOI.
+```bibtex
+@software{hayashida2026amanogawa,
+  title = {Amanogawa: Reproducible quantification of Milky Way structure from single-exposure smartphone images},
+  author = {Hayashida, Shunya},
+  year = {2026},
+  doi = {10.5281/zenodo.18213565},
+  url = {https://github.com/SHayashida/Amanogawa}
+}
+```
+
+Or use GitHub's automatic citation feature: click "Cite this repository" on the [repository homepage](https://github.com/SHayashida/Amanogawa).
+
+When the JOSS paper is published, please cite that as well using the journal DOI.
 
 ## Data license (image)
 
