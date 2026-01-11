@@ -45,6 +45,51 @@ pytest  # All tests should pass
 ruff check src tests  # Linting should pass
 ```
 
+## Paper compilation (JOSS)
+
+You can locally compile the manuscript for review and verification.
+
+### HTML (with citations)
+
+```bash
+pandoc paper/paper.md \
+	--from=markdown --to=html \
+	--citeproc --bibliography=paper/paper.bib \
+	--resource-path=paper \
+	-o paper/paper.html
+```
+
+### PDF (XeLaTeX)
+
+```bash
+pandoc paper/paper.md \
+	--pdf-engine=xelatex \
+	--citeproc --bibliography=paper/paper.bib \
+	--resource-path=paper \
+	-o paper/paper.pdf
+```
+
+Notes:
+- Figures live under `paper/figures/`; the manuscript references `figures/sample_star_detection_overlay.png`.
+- `--resource-path=paper` ensures images and bibliography resolve when building inside containers or mounted volumes.
+- `paper/paper.pdf` is intentionally ignored by `.gitignore`; commit only `paper/paper.md` and `paper/paper.bib`.
+
+### Docker-friendly commands
+
+```bash
+# HTML
+docker run --rm -v "$PWD/paper:/data" pandoc/core:latest \
+	-f markdown -t html --citeproc --bibliography=/data/paper.bib \
+	--resource-path=/data \
+	-o /data/paper.html /data/paper.md
+
+# PDF (image must include a LaTeX engine like xelatex)
+docker run --rm -v "$PWD/paper:/data" pandoc/core:latest \
+	--pdf-engine=xelatex --citeproc --bibliography=/data/paper.bib \
+	--resource-path=/data \
+	-o /data/paper.pdf /data/paper.md
+```
+
 ## Pull requests
 - Keep PRs focused (one change theme per PR).
 - Add/adjust tests when behavior changes.
