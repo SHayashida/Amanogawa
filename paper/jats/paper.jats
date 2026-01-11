@@ -31,7 +31,8 @@ structure from single-exposure smartphone images</article-title>
 </contrib>
 <aff id="aff-1">
 <institution-wrap>
-<institution>The Open University of Japan</institution>
+<institution>Faculty of Liberal Arts, Department of Liberal Arts, The
+Open University of Japan</institution>
 </institution-wrap>
 </aff>
 </contrib-group>
@@ -245,6 +246,33 @@ a Creative Commons Attribution 4.0 International License (CC BY
   citizen astronomers and community members who wish to share smartphone
   observations and join in collaborative analysis of wide-field Milky
   Way structure.</p>
+</sec>
+<sec id="ai-usage-disclosure">
+  <title>AI usage disclosure</title>
+  <p>The following generative AI tools were used in the development and
+  documentation of this work:</p>
+  <list list-type="bullet">
+    <list-item>
+      <p><bold>Tools/Models</bold>: ChatGPT 5.2 Thinking, GitHub Copilot
+      (Claude Haiku 4.5)</p>
+    </list-item>
+    <list-item>
+      <p><bold>Where</bold>: Code (e.g., function implementations, test
+      generation), documentation (e.g., README, docstrings), and paper
+      (e.g., phrasing, grammar review)</p>
+    </list-item>
+    <list-item>
+      <p><bold>Nature of assistance</bold>: Code generation,
+      refactoring, documentation writing, proofreading, and test
+      generation</p>
+    </list-item>
+    <list-item>
+      <p><bold>Human review</bold>: All AI-generated content was
+      reviewed, validated, and verified by the author; final judgments
+      on scientific claims, methodology, and correctness remain the
+      author’s responsibility</p>
+    </list-item>
+  </list>
 </sec>
 </body>
 <back>
