@@ -1,0 +1,238 @@
+<h1 id="summary">Summary</h1>
+<p>Amanogawa is an open-source, MIT-licensed Python package and
+reproducible workflow for extracting quantitative summaries of Milky Way
+structure from a single wide-field smartphone long-exposure image. The
+software bridges widely accessible astrophotography and transparent,
+inspectable measurements suitable for small research projects,
+education, and citizen-science studies.</p>
+<p>From a single image, Amanogawa detects candidate point sources,
+exports coordinate catalogs, and computes spatial statistics that
+summarize stellar clustering across scales. In parallel, it estimates
+the principal axis of the Milky Way band in image coordinates and
+measures band width from perpendicular profiles, enabling consistent
+within-image and cross-image comparisons. These analyses are
+intentionally formulated to remain meaningful even in the absence of
+full astrometric calibration.</p>
+<p>The workflow supports both interactive notebook use and a
+command-line interface, producing archival-friendly artifacts including
+star catalogs, threshold-sweep summaries, fitted band-width parameters,
+and diagnostic/publication-quality figures (CSV/JSON/PNG). By combining
+explicit robustness diagnostics with a standardized, end-to-end
+pipeline, Amanogawa enables repeatable quantitative analyses of
+accessible single-exposure imagery while keeping intermediate results
+transparent and reusable.</p>
+<h1 id="statement-of-need">Statement of need</h1>
+<p>Consumer astrophotography and citizen-science observations have
+become widespread, yet the scientific potential of smartphone-collected
+wide-field Milky Way images remains largely untapped. Common tools for
+smartphone and hobbyist images primarily target aesthetic outputs
+(stacking, denoising, stretching) rather than transparent measurement
+and robustness diagnostics, creating a barrier to quantitative citizen
+participation in astronomical observation and discovery. Conversely,
+quantitative studies of Galactic structure and stellar clustering often
+rely on curated survey catalogs and pipelines that assume calibrated
+instruments and rich metadata. This creates a practical gap:
+single-exposure images are easy to collect and share, yet difficult to
+convert into defensible, reproducible summaries of spatial structure and
+band/dark-lane morphology.</p>
+<p>Existing astronomical software such as SExtractor <span
+class="citation" data-cites="bertin1996">(Bertin and Arnouts
+1996)</span> and astrometry.net <span class="citation"
+data-cites="lang2010astrometrynet">(Lang et al. 2010)</span> excel at
+source detection and astrometric calibration for calibrated telescope
+data, but are not optimized for the specific workflow of single
+smartphone exposures without prior astrometry. Photometric and
+morphological analysis tools like Astropy and Photutils <span
+class="citation" data-cites="astropy2022 photutils1110">(Astropy
+Collaboration et al. 2022; Photutils Contributors 2024)</span> provide
+excellent building blocks but require significant configuration and do
+not inherently address the <strong>radiometric and geometric challenges
+of smartphone imagery</strong> (non-linear sensor response, uneven
+illumination, and high-ISO noise). Amanogawa mitigates these through
+<strong>per-image intensity normalization</strong> (adaptive scaling for
+varying exposure conditions), <strong>robust photometric
+estimation</strong> (median-based background in annuli to suppress hot
+pixels and random noise), and <strong>multi-scale sensitivity
+analysis</strong> (detection threshold sweeps to quantify parameter
+dependence, multi-threshold background subtraction for dark-lane
+detection in non-uniform fields). By wrapping these adaptive routines
+into a cohesive, end-to-end pipeline, Amanogawa enables reproducible
+analysis without requiring detailed calibration knowledge.</p>
+<p>Amanogawa addresses this gap by providing an end-to-end pipeline that
+connects (1) source detection, (2) spatial statistics, and (3) Milky Way
+band geometry into a coherent and inspectable workflow. For source
+detection, Amanogawa uses Laplacian-of-Gaussian (LoG) blob detection
+<span class="citation" data-cites="lindeberg1998">(Lindeberg
+1998)</span> (implemented via standard scientific Python
+image-processing tooling <span class="citation"
+data-cites="vanderwalt2014scikitimage">(Walt et al. 2014)</span>) and
+includes an explicit <em>threshold-sweep</em> routine that recomputes
+downstream metrics across a range of detection thresholds. This built-in
+sensitivity analysis helps users avoid over-interpreting results tied to
+a single parameter choice and provides a simple, teachable approach to
+robustness for non-specialists.</p>
+<p>For clustering analysis, Amanogawa computes the two-point correlation
+function <span class="math inline"><em>ξ</em>(<em>r</em>)</span> using a
+catalog-based DD/RR estimator against repeated Poisson reference sets
+<span class="citation"
+data-cites="peebleshauser1974 peebles1980">(Peebles and Hauser 1974;
+Peebles 1980)</span>, alongside nearest-neighbour distance distributions
+<span class="citation" data-cites="clark1954">(Clark and Evans
+1954)</span>. The software also includes box-count scaling as a compact
+descriptive summary of multi-scale occupancy rather than as a formal
+estimator of fractal dimension, complementing <span
+class="math inline"><em>ξ</em>(<em>r</em>)</span> by providing an
+intuitive, coarse-grained view of spatial structure. The software
+additionally supports magnitude-stratified clustering by pairing simple
+aperture photometry with quantile binning, allowing users to compare
+<span class="math inline"><em>ξ</em>(<em>r</em>)</span> across
+brightness groups without leaving the workflow <span class="citation"
+data-cites="photutils1110 astropy2022">(Photutils Contributors 2024;
+Astropy Collaboration et al. 2022)</span>.</p>
+<p>For Milky Way band morphology, Amanogawa estimates the band principal
+axis from the second-order moments of the source-density distribution,
+equivalent to a PCA on the density field <span class="citation"
+data-cites="pedregosa2011sklearn">(Pedregosa et al. 2011)</span>. This
+choice provides a simple, rotation-invariant summary of the dominant
+elongation of the Milky Way band and avoids subjective, image-edge–based
+axis selection. The software then measures the perpendicular band width
+by fitting smooth profile families (Gaussian and Lorentzian), capturing
+both core width and heavy-tail behaviour. When a plate scale is
+available (e.g., via WCS metadata used in the analysis), widths can be
+reported in angular units for cross-image comparison; otherwise, pixel
+units remain valid for within-image and relative analyses <span
+class="citation" data-cites="astropy2022 lang2010astrometrynet">(Astropy
+Collaboration et al. 2022; Lang et al. 2010)</span>.</p>
+<p>While smartphone optics introduce geometric distortions, Amanogawa
+focuses on extracting internal relative consistencies. Future versions
+will support distortion correction via standard WCS headers if
+provided.</p>
+<p>The workflow was demonstrated on a single 30 s smartphone exposure,
+producing stable summary outputs across a detection-threshold sweep
+(including consistently positive <span
+class="math inline"><em>ξ</em>(<em>r</em>)</span> over the tested range)
+and band-width estimates on the order of 12–18° depending on the profile
+model. While these values are presented as an example of the pipeline’s
+quantitative outputs rather than as definitive astrophysical claims,
+they illustrate the type of reproducible, parameter-aware measurement
+Amanogawa enables. By packaging these steps into a reusable library and
+standardized artifacts, Amanogawa lowers the barrier for small research
+projects, classroom labs, and scalable citizen-science campaigns based
+on accessible, single-exposure imagery. The software is designed to
+encourage participation from non-specialists, enabling the
+democratization of wide-field Galactic observations and fostering
+community-driven scientific discovery. # Example Output</p>
+<p>The figure illustrates a representative diagnostic visualization
+generated by the pipeline; it is included here to demonstrate the type
+of artifact produced rather than to support a scientific claim.</p>
+<figure>
+<img src="figures/sample_star_detection_overlay.png"
+alt="Star detection results showing detected point sources overlaid on a smartphone Milky Way image." />
+<figcaption aria-hidden="true">Star detection results showing detected
+point sources overlaid on a smartphone Milky Way image.</figcaption>
+</figure>
+<p>This visualization is automatically generated using the
+<code>--plot-output</code> flag in the <code>amanogawa-detect</code> CLI
+tool, providing immediate visual feedback on detection quality and
+enabling quick assessment of detection parameters. # Acknowledgements
+Amanogawa is built on the scientific Python ecosystem. The author thanks
+the maintainers and contributors of the open-source libraries that make
+this work possible, including NumPy <span class="citation"
+data-cites="harris2020numpy">(Harris et al. 2020)</span>, SciPy <span
+class="citation" data-cites="virtanen2020scipy">(Virtanen et al.
+2020)</span>, scikit-image <span class="citation"
+data-cites="vanderwalt2014scikitimage">(Walt et al. 2014)</span>,
+Astropy and Photutils <span class="citation"
+data-cites="astropy2022 photutils1110">(Astropy Collaboration et al.
+2022; Photutils Contributors 2024)</span>, and the broader
+data/visualization stack used to produce the exported artifacts and
+figures.</p>
+<p>The author welcomes and anticipates future contributions from citizen
+astronomers and community members who wish to share smartphone
+observations and join in collaborative analysis of wide-field Milky Way
+structure.</p>
+<h1 class="unnumbered" id="references">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent"
+data-entry-spacing="0" role="list">
+<div id="ref-astropy2022" class="csl-entry" role="listitem">
+Astropy Collaboration, Adrian M. Price-Whelan, Pey Lian Lim, and Astropy
+Project Contributors. 2022. <span>“The <span>Astropy</span> Project:
+Sustaining and Growing a Community-Oriented Open-Source Project and the
+Latest Major Release (V5.0) of the Core Package.”</span> <em>The
+Astrophysical Journal</em> 935 (2): 167. <a
+href="https://doi.org/10.3847/1538-4357/ac7c74">https://doi.org/10.3847/1538-4357/ac7c74</a>.
+</div>
+<div id="ref-bertin1996" class="csl-entry" role="listitem">
+Bertin, Emmanuel, and Stephane Arnouts. 1996.
+<span>“<span>SExtractor</span>: Software for Source Extraction.”</span>
+<em>Astronomy and Astrophysics Supplement</em> 117: 393–404. <a
+href="https://doi.org/10.1051/aas:1996164">https://doi.org/10.1051/aas:1996164</a>.
+</div>
+<div id="ref-clark1954" class="csl-entry" role="listitem">
+Clark, Philip J., and Francis C. Evans. 1954. <span>“Distance to Nearest
+Neighbor as a Measure of Spatial Relationships in Populations.”</span>
+<em>Ecology</em> 35 (4): 445–53. <a
+href="https://doi.org/10.2307/1931034">https://doi.org/10.2307/1931034</a>.
+</div>
+<div id="ref-harris2020numpy" class="csl-entry" role="listitem">
+Harris, Charles R., K. Jarrod Millman, Stéfan J. van der Walt, Ralf
+Gommers, Pauli Virtanen, David Cournapeau, Eric Wieser, et al. 2020.
+<span>“Array Programming with <span>NumPy</span>.”</span>
+<em>Nature</em> 585 (7825): 357–62. <a
+href="https://doi.org/10.1038/s41586-020-2649-2">https://doi.org/10.1038/s41586-020-2649-2</a>.
+</div>
+<div id="ref-lang2010astrometrynet" class="csl-entry" role="listitem">
+Lang, Dustin, David W. Hogg, Keir Mierle, Michael Blanton, and Sam
+Roweis. 2010. <span>“Astrometry.net: Blind Astrometric Calibration of
+Arbitrary Astronomical Images.”</span> <em>The Astronomical Journal</em>
+139 (5): 1782–1800. <a
+href="https://doi.org/10.1088/0004-6256/139/5/1782">https://doi.org/10.1088/0004-6256/139/5/1782</a>.
+</div>
+<div id="ref-lindeberg1998" class="csl-entry" role="listitem">
+Lindeberg, Tony. 1998. <span>“Feature Detection with Automatic Scale
+Selection.”</span> <em>International Journal of Computer Vision</em> 30
+(2): 79–116. <a
+href="https://doi.org/10.1023/A:1008045108935">https://doi.org/10.1023/A:1008045108935</a>.
+</div>
+<div id="ref-pedregosa2011sklearn" class="csl-entry" role="listitem">
+Pedregosa, Fabian, Gaël Varoquaux, Alexandre Gramfort, Vincent Michel,
+Bertrand Thirion, Olivier Grisel, Mathieu Blondel, et al. 2011.
+<span>“Scikit-Learn: Machine Learning in <span>Python</span>.”</span>
+<em>Journal of Machine Learning Research</em> 12: 2825–30. <a
+href="https://doi.org/10.5555/1953048.2078195">https://doi.org/10.5555/1953048.2078195</a>.
+</div>
+<div id="ref-peebles1980" class="csl-entry" role="listitem">
+Peebles, P. J. E. 1980. <em>The Large-Scale Structure of the
+Universe</em>. Princeton, NJ: Princeton University Press. <a
+href="https://doi.org/10.1515/9780691213019">https://doi.org/10.1515/9780691213019</a>.
+</div>
+<div id="ref-peebleshauser1974" class="csl-entry" role="listitem">
+Peebles, P. J. E., and M. G. Hauser. 1974. <span>“Statistical Analysis
+of Catalogs of Extragalactic Objects. <span>III</span>. The
+Shane–Wirtanen and Zwicky Catalogs.”</span> <em>The Astrophysical
+Journal Supplement Series</em> 28: 19–36. <a
+href="https://doi.org/10.1086/190308">https://doi.org/10.1086/190308</a>.
+</div>
+<div id="ref-photutils1110" class="csl-entry" role="listitem">
+Photutils Contributors. 2024. <span>“Astropy/Photutils: 1.11.0.”</span>
+Zenodo. <a
+href="https://doi.org/10.5281/zenodo.10671725">https://doi.org/10.5281/zenodo.10671725</a>.
+</div>
+<div id="ref-virtanen2020scipy" class="csl-entry" role="listitem">
+Virtanen, Pauli, Ralf Gommers, Travis E. Oliphant, Matt Haberland, Tyler
+Reddy, David Cournapeau, Evgeni Burovski, et al. 2020.
+<span>“<span>SciPy</span> 1.0: Fundamental Algorithms for Scientific
+Computing in <span>Python</span>.”</span> <em>Nature Methods</em> 17
+(3): 261–72. <a
+href="https://doi.org/10.1038/s41592-019-0686-2">https://doi.org/10.1038/s41592-019-0686-2</a>.
+</div>
+<div id="ref-vanderwalt2014scikitimage" class="csl-entry"
+role="listitem">
+Walt, Stéfan van der, Johannes L. Schönberger, Juan Nunez-Iglesias,
+François Boulogne, Joshua D. Warner, Neil Yager, Emmanuelle Gouillart,
+Tony Yu, and the scikit-image contributors. 2014. <span>“Scikit-Image:
+Image Processing in <span>Python</span>.”</span> <em>PeerJ</em> 2: e453.
+<a
+href="https://doi.org/10.7717/peerj.453">https://doi.org/10.7717/peerj.453</a>.
+</div>
+</div>
