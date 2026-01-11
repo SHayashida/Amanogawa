@@ -55,8 +55,8 @@ apt-get install -y gcc g++ build-essential python3-dev git
 git clone https://github.com/SHayashida/Amanogawa.git
 cd Amanogawa
 
-# 3. Install package with all dependencies
-pip install -e .
+# 3. Install package with all dependencies (dev extras include ruff/pytest)
+pip install -e ".[dev]"
 ```
 
 Verify the installation:
