@@ -21,7 +21,7 @@ bibliography: paper.bib
 
 Amanogawa is an open-source Python package and reproducible workflow for extracting quantitative, research-oriented measurements from a *single* wide-field smartphone long-exposure image of the Milky Way. From one image, Amanogawa detects candidate point sources, exports a coordinate catalogue, and computes spatial statistics that summarize clustering across scales. In parallel, it estimates the Milky Way band’s principal axis in image coordinates and measures the band width from perpendicular profiles, enabling consistent comparisons across images, sites, and acquisition settings.
 
-The workflow is designed to be “Colab-first” and to produce archival-friendly artefacts: star coordinate tables, threshold-sweep summaries, fitted band-width parameters, and publication-ready figures (CSV/JSON/PNG). By combining a core library with command-line style execution in notebooks/scripts, Amanogawa supports repeatable analyses where intermediate products can be inspected and reused.
+The workflow supports both interactive notebook environments and command-line workflows, producing archival-friendly artefacts: star coordinate tables, threshold-sweep summaries, fitted band-width parameters, and publication-ready figures (CSV/JSON/PNG). By combining a core library with command-line style execution in notebooks/scripts, Amanogawa supports repeatable analyses where intermediate products can be inspected and reused.
 
 # Statement of need
 

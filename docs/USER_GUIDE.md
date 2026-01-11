@@ -22,6 +22,126 @@ When analyzing images **without World Coordinate System (WCS) metadata**:
 
 **Future versions** will support distortion correction via standard WCS headers if provided.
 
+## Image Acquisition Guide (iPhone 16/17)
+
+Amanogawa is optimized for analyzing single 30-second smartphone long-exposure images of the Milky Way. This section explains how to capture high-quality images using iPhone 16 or 17.
+
+### Location Selection
+
+**Dark sky site criteria:**
+- **Bortle scale 4 or lower** (minimal light pollution)
+- **Mountain peaks, rural countryside**, far from cities
+- **New moon phase** (moonlight washes out faint structure)
+- **Clear weather** (avoid haze; autumn/winter are often clearest)
+
+**Online resources:**
+- Light Pollution Map (lightpollutionmap.info)
+- Stellarium Mobile (plan sky position and moon phase)
+- Clear Sky Chart (cloud forecasts for astronomy sites)
+
+### Equipment Setup
+
+**Tripod selection:**
+- Any smartphone tripod under $20–30 USD works fine
+- **Stability matters more than quality** (wobbly = no 30-second exposure)
+- Ensure ball head or pan-tilt moves smoothly without drift
+
+**Pre-shoot checklist:**
+- iPhone mounted and tightened securely
+- Tripod leveled and stable on ground (test by gently pushing)
+- No wind or vibration sources nearby (avoid traffic, machinery)
+- Notifications silenced (airplane mode recommended 1 minute before)
+
+### iPhone Camera Configuration
+
+**Prepare your iPhone:**
+
+1. **Open Camera app** → **Photo mode**
+   - Avoid Portrait, Video, or other modes
+
+2. **Disable Flash**
+   - Tap lightning bolt icon → "Off"
+
+3. **Disable Live Photo**
+   - Tap the overlapping circles icon (top right) → "Off"
+   - Live Photo can introduce noise/artifacts in long exposures
+
+4. **Optional: Enable Grid** (Settings > Camera > Grid = "On")
+   - Helps with framing and horizon leveling
+
+### Exposure Capture Workflow
+
+**Step 1: Compose the shot**
+
+- Point iPhone at Milky Way (zenith if possible, or band orientation)
+- Watch for yellow **moon icon** to appear in upper-left corner (Night mode activation)
+- If no moon icon appears, lighting is too bright for long exposure (find darker location)
+
+**Step 2: Set 30-second exposure**
+
+1. Tap the **↓ icon** at the top of the screen to reveal control panel
+2. Tap the **Night mode icon** (yellow moon symbol)
+3. A slider appears; drag all the way to the right ("Max")
+   - Initially shows ~10 seconds
+   - If iPhone is completely stable, **automatically upgrades to 30 seconds** (watch the counter)
+4. Confirm: "30s" should display in Night mode indicator
+
+**Step 3: Trigger the exposure**
+
+- Use **timer** (3-second or 10-second delay) to avoid hand vibration
+  - Tap the timer icon (looks like a clock with curved arrow) → "3s" or "10s"
+- Alternative: Use **Apple Watch** (if paired) to trigger shutter remotely
+- Tap shutter button
+
+**Step 4: Wait (do not move)**
+
+- **30 seconds is a long time**; absolute stillness is critical
+- Do not touch iPhone, tripod, or ground nearby
+- Avoid any vibration (heavy footsteps, traffic, wind pushes)
+- Wait for completion (camera will chime and show captured frame)
+
+### Post-Capture Review & Processing
+
+**Quick review:**
+
+- Check **Photos app** immediately
+- Look for:
+  - Star trails or smearing (indicates vibration—try again with better stability)
+  - Excessive noise (ISO too high—may need darker location)
+  - Desired Milky Way structure visible (band, dark lanes, bright core)
+
+**Optional post-processing:**
+
+- Use **iOS Photos app** for minor adjustments (brightness, warmth)
+- For serious editing:
+  - **Lightroom Mobile** (free or subscription)
+  - **Snapseed** (free; strong for night sky)
+  - **Adobe Camera Raw** (works well for astrophotography)
+- Typical edits:
+  - Increase vibrance/saturation (stars pop more)
+  - Lift shadows gently (reveal fainter stars)
+  - Reduce highlights (if sun still low on horizon)
+  - Avoid extreme compression artifacts
+
+### Troubleshooting
+
+| Problem | Likely Cause | Solution |
+|---------|-------------|----------|
+| No moon icon appears | Too bright / poor dark adaptation | Move to darker location; wait 20 min for eyes to adapt |
+| Stops at 10 sec, doesn't reach 30 s | Tripod vibration | Tighten mount; use timer delay; test stability by pushing |
+| Stars are trails, not points | Camera moved during capture | Use timer or Apple Watch; ensure tripod is locked |
+| Image very noisy/grainy | High ISO in bad location | Move away from city lights; try full moon night (lower noise, trade-off in structure) |
+| Milky Way too faint | Light pollution or poor contrast | Find darker site; post-process more aggressively |
+| Image soft / blurry overall | Out of focus | Pre-focus on bright star or distant light before Night mode |
+
+### Tips for Best Results
+
+1. **Thermal stability**: Let iPhone cool in night air for 5–10 minutes (reduces thermal noise)
+2. **Sky direction**: Point at **Milky Way band** (south in Northern Hemisphere, north in Southern; varies by season)
+3. **Lens cleaning**: Wipe lens gently before each shot (fingerprints reduce contrast)
+4. **Multiple exposures**: Take 3–5 exposures from same location; Amanogawa can process each independently
+5. **Moon avoidance**: Bright moon can wash out faint structure even from "dark" sites; check lunar phase calendar
+
 ## Output Metrics Explained
 
 ### Star Detection (`amanogawa-detect`)
