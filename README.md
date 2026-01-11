@@ -12,23 +12,6 @@ Quantifying Milky Way stellar clustering and dark-lane morphology from a single 
 
 English | [日本語 / Japanese](./README_ja.md)
 
-## Quick Verification (for reviewers)
-
-Clone, install, test, and run in one block:
-
-```bash
-git clone https://github.com/SHayashida/Amanogawa.git
-cd Amanogawa
-python -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-pytest
-ruff check src tests
-amanogawa-detect --image data/raw/IMG_5991.jpg --out outputs/ --threshold 0.05 --plot-output
-```
-
-All tests should pass (12 passed), lint should pass, and `outputs/star_detection_overlay.png` will be generated.
-
 ## Statement of need
 
 Wide-field Milky Way images (including consumer smartphone long exposures) contain measurable structure: clustered stellar fields and dust-driven dark lanes. Amanogawa provides a compact, reproducible pipeline that extracts quantitative metrics (clustering statistics, principal-axis/width estimates, and dark-lane morphology) from a single image to support citizen-science workflows and lightweight scientific exploration.
@@ -99,9 +82,64 @@ pytest
 
 All tests should pass (12 passed). Some deprecation warnings from matplotlib are expected and can be safely ignored.
 
-## Quick start (CLI)
+## Image Acquisition Guide (iPhone 16/17)
 
-Place an image in `data/raw/` (the repository ships `data/raw/IMG_5991.jpg`).
+Amanogawa is optimized for single 30-second smartphone exposures of the Milky Way. Here is how to capture high-quality images using iPhone 16 or 17:
+
+### 1. Choose a location
+
+- Find a **dark location away from city lights** (mountains, rural areas, etc.)
+- **New moon phase preferred** (around new moon to avoid moonlight)
+- Check light pollution maps online if available
+
+### 2. Prepare your tripod
+
+- **Mount iPhone securely** on a stable tripod (most critical step—vibration prevents 30-second exposure)
+- An inexpensive smartphone tripod is sufficient
+- Ensure the mount is completely still before shooting
+
+### 3. Configure your camera app
+
+- Open Camera app and switch to **Photo mode**
+- **Turn off Flash** (essential for night sky)
+- **Turn off Live Photo** (can interfere with long-exposure stability)
+
+### 4. Compose your shot
+
+- **Point at the Milky Way** (zenith or band orientation)
+- You should see a **yellow moon icon** (Night mode) appear automatically in the upper-left corner
+
+### 5. Set exposure to 30 seconds
+
+- Tap the **↓ icon** at the top to reveal the control bar
+- Tap the **Night mode icon** (moon symbol)
+- Drag the slider all the way to the right to **"Max"** (starts at ~10 seconds)
+- If iPhone is completely stable, it will **automatically switch to 30 seconds**
+
+### 6. Capture the image
+
+- Press the **shutter button**
+- To avoid vibration, use a **timer** (3-second or 10-second delay) or **Apple Watch remote shutter** if available
+- **Do not move the iPhone** for the full 30 seconds—silence notifications, avoid touch
+- Wait for the exposure to complete
+
+### 7. Review and post-process (optional)
+
+- Check the photo in the Photos app
+- Adjust **brightness/contrast** if desired (Photos app can make minor tweaks)
+- For professional results, use Lightroom, Snapseed, or other post-processing tools
+
+### Tips for success
+
+- **Stability is critical**: A wobbly tripod will make 30-second exposure impossible
+- **Disable notifications**: Put iPhone in airplane mode 1 minute before shooting
+- **Cool sensor**: Let iPhone cool for 5 minutes in cold night air (thermal noise reduction)
+- **Steady framing**: Frame shot before starting exposure; avoid adjusting during countdown
+- **Clear weather**: Avoid haze; autumn/winter usually offer clearer skies
+
+Once you have your image, load it into the Amanogawa pipeline using the CLI commands in the **Quick start** section below.
+
+## Quick start (CLI)
 
 1. Star detection (writes coordinates CSV + threshold sweep summaries):
 
@@ -169,63 +207,6 @@ plt.show()
 
 For more advanced analysis and visualization examples, see the notebooks in `notebooks/`.
 
-## Image Acquisition Guide (iPhone 16/17)
-
-Amanogawa is optimized for single 30-second smartphone exposures of the Milky Way. Here is how to capture high-quality images using iPhone 16 or 17:
-
-### 1. Choose a location
-
-- Find a **dark location away from city lights** (mountains, rural areas, etc.)
-- **New moon phase preferred** (around new moon to avoid moonlight)
-- Check light pollution maps online if available
-
-### 2. Prepare your tripod
-
-- **Mount iPhone securely** on a stable tripod (most critical step—vibration prevents 30-second exposure)
-- An inexpensive smartphone tripod is sufficient
-- Ensure the mount is completely still before shooting
-
-### 3. Configure your camera app
-
-- Open Camera app and switch to **Photo mode**
-- **Turn off Flash** (essential for night sky)
-- **Turn off Live Photo** (can interfere with long-exposure stability)
-
-### 4. Compose your shot
-
-- **Point at the Milky Way** (zenith or band orientation)
-- You should see a **yellow moon icon** (Night mode) appear automatically in the upper-left corner
-
-### 5. Set exposure to 30 seconds
-
-- Tap the **↓ icon** at the top to reveal the control bar
-- Tap the **Night mode icon** (moon symbol)
-- Drag the slider all the way to the right to **"Max"** (starts at ~10 seconds)
-- If iPhone is completely stable, it will **automatically switch to 30 seconds**
-
-### 6. Capture the image
-
-- Press the **shutter button**
-- To avoid vibration, use a **timer** (3-second or 10-second delay) or **Apple Watch remote shutter** if available
-- **Do not move the iPhone** for the full 30 seconds—silence notifications, avoid touch
-- Wait for the exposure to complete
-
-### 7. Review and post-process (optional)
-
-- Check the photo in the Photos app
-- Adjust **brightness/contrast** if desired (Photos app can make minor tweaks)
-- For professional results, use Lightroom, Snapseed, or other post-processing tools
-
-### Tips for success
-
-- **Stability is critical**: A wobbly tripod will make 30-second exposure impossible
-- **Disable notifications**: Put iPhone in airplane mode 1 minute before shooting
-- **Cool sensor**: Let iPhone cool for 5 minutes in cold night air (thermal noise reduction)
-- **Steady framing**: Frame shot before starting exposure; avoid adjusting during countdown
-- **Clear weather**: Avoid haze; autumn/winter usually offer clearer skies
-
-Once you have your image, load it into the Amanogawa pipeline using the CLI commands in the **Quick start** section above.
-
 ## Example Output
 
 Below is an example of the star detection visualization generated with the `--plot-output` flag:
@@ -259,6 +240,23 @@ ruff check src tests
 ```
 
 CI runs lint + tests on push/PR.
+
+## Quick Verification (for reviewers)
+
+Clone, install, test, and run in one block:
+
+```bash
+git clone https://github.com/SHayashida/Amanogawa.git
+cd Amanogawa
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+pytest
+ruff check src tests
+amanogawa-detect --image data/raw/IMG_5991.jpg --out outputs/ --threshold 0.05 --plot-output
+```
+
+All tests should pass (12 passed), lint should pass, and `outputs/sample_star_detection_overlay.png` will be generated.
 
 ## Citation
 
