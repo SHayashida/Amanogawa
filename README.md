@@ -26,7 +26,7 @@ Wide-field Milky Way images (including consumer smartphone long exposures) conta
 
 ## Installation
 
-> Tested & recommended with **Python 3.10.x**. Avoid 3.13 for now.
+> Recommended: **Python 3.10.x**. Supported: **3.10–3.12**. Avoid **3.13** for now.
 
 ```bash
 python -m venv .venv
