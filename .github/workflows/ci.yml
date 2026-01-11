@@ -34,3 +34,6 @@ jobs:
 
       - name: Open Journals PDF Generator
         uses: openjournals/openjournals-draft-action@v1.0
+        with:
+          journal: joss
+          paper-path: paper/paper.md
