@@ -35,8 +35,8 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Development documentation (internal notes)
-docs/
+# Development documentation (internal notes, not user-facing)
+docs/notebook_api_migration_ja.md
 
 # Paper build artifacts (keep sources under paper/ tracked)
 paper/*.pdf

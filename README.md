@@ -38,6 +38,7 @@ Wide-field Milky Way images (including consumer smartphone long exposures) conta
 - **Core library:** installable Python package under `src/amanogawa/`.
 - **CLIs:** entry points for the main steps (`amanogawa-*`).
 - **Notebooks:** tutorials under `notebooks/` that exercise the library and reproduce figures.
+- **User guide:** `docs/USER_GUIDE.md` - FAQ, troubleshooting, and output metrics explained.
 - **JOSS paper:** `paper/paper.md` (+ `paper/paper.bib`).
 
 ## Installation
