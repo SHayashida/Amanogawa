@@ -1,0 +1,22 @@
+
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Amanogawa"
+type: software
+authors:
+  - family-names: Hayashida
+    given-names: Shunya
+repository-code: "https://github.com/SHayashida/Amanogawa"
+license: MIT
+version: 0.1.0
+date-released: "2026-01-11"
+
+preferred-citation:
+  type: article
+  title: "Amanogawa: Quantifying Milky Way clustering and band morphology from a single smartphone exposure"
+  authors:
+    - family-names: Hayashida
+      given-names: Shunya
+  year: 2026
+  journal: "Journal of Open Source Software"
+

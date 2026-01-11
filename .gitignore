@@ -35,6 +35,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Development documentation (internal notes)
+docs/
+
 # Paper build artifacts (keep sources under paper/ tracked)
 paper/*.pdf
 paper/*.tex
