@@ -52,4 +52,13 @@ Amanogawa is built on the scientific Python ecosystem. The author thanks the mai
 
 The author welcomes and anticipates future contributions from citizen astronomers and community members who wish to share smartphone observations and join in collaborative analysis of wide-field Milky Way structure.
 
+# AI usage disclosure
+
+The following generative AI tools were used in the development and documentation of this work:
+
+- **Tools/Models**: ChatGPT 5.2 Thinking, GitHub Copilot (Claude Haiku 4.5)
+- **Where**: Code (e.g., function implementations, test generation), documentation (e.g., README, docstrings), and paper (e.g., phrasing, grammar review)
+- **Nature of assistance**: Code generation, refactoring, documentation writing, proofreading, and test generation
+- **Human review**: All AI-generated content was reviewed, validated, and verified by the author; final judgments on scientific claims, methodology, and correctness remain the author's responsibility
+
 # References
