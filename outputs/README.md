@@ -39,8 +39,8 @@ outputs/
 ### Shared Data
 - **IMG_5991_star_coords.csv**: Star coordinates detected from the main image
 - **sample_star_coords.csv**: Sample coordinates for testing and validation
+- **sample_star_detection_overlay.png**: Sample visualization of detected stars overlaid on the original image (curated example for README/paper)
 - **ANALYSIS_MASTER_SUMMARY.json**: Master summary combining all analysis results
-- **star_detection_overlay.png**: Visualization of detected stars overlaid on the original image (generated with `--plot-output` flag)
 
 ### Band Analysis (01_band_analysis.ipynb)
 Statistical analysis of stellar distribution patterns and Milky Way band structure:

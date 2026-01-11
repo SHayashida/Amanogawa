@@ -40,7 +40,7 @@ The workflow was demonstrated on a single 30 s smartphone exposure, producing st
 
 The figure below shows an example output from the star detection pipeline, with detected point sources overlaid on the original smartphone image:
 
-![Star detection results showing detected point sources overlaid on a smartphone Milky Way image.](../outputs/star_detection_overlay.png)
+![Star detection results showing detected point sources overlaid on a smartphone Milky Way image.](../outputs/sample_star_detection_overlay.png)
 
 This visualization is automatically generated using the `--plot-output` flag in the `amanogawa-detect` CLI tool, providing immediate visual feedback on detection quality and enabling quick assessment of detection parameters.
 # Acknowledgements
