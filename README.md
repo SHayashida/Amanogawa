@@ -253,7 +253,8 @@ The notebooks are tutorial-style drivers:
 
 They are intentionally not the “core implementation”; the reusable code lives in `src/amanogawa/`.
 
-[Sample: Open in Colab: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
+[Open in Colab: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
+
 [Open in Colab: Dark Morphology](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/02_dark_morphology.ipynb)
 
 ## Tests and code quality
