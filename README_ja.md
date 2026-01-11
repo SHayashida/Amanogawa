@@ -28,12 +28,7 @@ Amanogawa は、オープンソース（MIT ライセンス）の Python パッ�
 python -m venv .venv
 source .venv/bin/activate
 
-pip install -e .
-```
-
-開発用（テスト/ruff）:
-
-```bash
+# ruff/pytest を含む dev extras をデフォルトでインストール
 pip install -e ".[dev]"
 ```
 

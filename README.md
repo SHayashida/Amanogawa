@@ -32,12 +32,7 @@ Amanogawa is an open-source, MIT-licensed Python package and reproducible workfl
 python -m venv .venv
 source .venv/bin/activate
 
-pip install -e .
-```
-
-For development (tests/lint):
-
-```bash
+# Install with dev extras to include ruff/pytest used in docs and CI
 pip install -e ".[dev]"
 ```
 
