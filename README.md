@@ -77,6 +77,42 @@ pytest
 
 All tests should pass (12 passed). Some deprecation warnings from matplotlib are expected and can be safely ignored.
 
+### Installation troubleshooting
+
+**Q: Does `pip install -e .` work without pre-configuration?**
+
+**A:** Yes. `pip install -e ".[dev]"` should complete successfully on **Ubuntu/Debian, macOS (Intel/ARM), and Windows**. 
+- Python 3.10 recommended; 3.10–3.12 supported
+- All dependencies are installable via PyPI without system-level package management (macOS Homebrew, apt, etc.)
+- If you encounter build errors, see below
+
+**Q: Installation fails with "photutils build error" on macOS**
+
+**A:** Ensure Xcode command-line tools are installed:
+```bash
+xcode-select --install
+```
+
+Then retry:
+```bash
+pip install -e ".[dev]"
+```
+
+**If the above doesn't work**, use Docker (see above section) to verify in a clean environment.
+
+**Q: What if `pip install .` fails but `pip install ".[dev]"` succeeds?**
+
+**A:** Both should succeed. If only dev extras work, report the issue with:
+```bash
+pip install --verbose -e .
+```
+
+(Paste the full error to GitHub Issues.)
+
+**Q: Can I install without dev extras for production use?**
+
+**A:** Yes: `pip install -e .` installs the package. The `[dev]` extras (pytest, ruff) are only needed for development/testing. JOSS reviewers may use either; both are tested in CI.
+
 ## Image Acquisition Guide (iPhone 16/17)
 
 Amanogawa is optimized for single 30-second smartphone exposures of the Milky Way. Here is how to capture high-quality images using iPhone 16 or 17:

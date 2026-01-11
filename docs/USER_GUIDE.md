@@ -228,13 +228,43 @@ amanogawa-detect --image INPUT.jpg --out outputs/ --threshold 0.08
 
 ### Problem: Installation fails with "photutils build error"
 
-**Solution:**
-```bash
-# Ensure build tools are installed (Mac)
-xcode-select --install
+**Why this happens:**
+- Photutils requires compiled dependencies (C/Fortran components)
+- macOS: Xcode command-line tools not installed → compiler unavailable
+- Windows: MSVC build tools may be missing
+- All platforms: Outdated pip/setuptools can't handle wheels correctly
 
-# Or use Docker environment (see README Docker section)
-```
+**Solutions (in order):**
+
+1. **Install build tools (macOS/Linux):**
+   ```bash
+   # macOS: Install Xcode command-line tools
+   xcode-select --install
+   
+   # Then retry installation
+   pip install -e ".[dev]"
+   ```
+
+2. **Upgrade pip and setuptools:**
+   ```bash
+   python -m pip install --upgrade pip setuptools wheel
+   pip install -e ".[dev]"
+   ```
+
+3. **Use Docker (clean environment verification):**
+   See README.md "Docker-based installation" section for step-by-step instructions. This guarantees a reproducible build environment.
+
+4. **If issue persists:**
+   ```bash
+   # Show detailed build logs
+   pip install --verbose -e ".[dev]"
+   
+   # Share the output in a GitHub issue
+   ```
+
+**Note:** 
+- Both `pip install -e ".[dev]"` and `pip install -e "."` should work after build tools are installed
+- CI tests both configurations on Ubuntu and macOS; if your system fails, it's likely a local environment issue (see Docker option)
 
 ### Problem: Band angle estimate seems incorrect
 

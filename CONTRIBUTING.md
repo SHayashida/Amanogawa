@@ -45,7 +45,40 @@ pytest  # All tests should pass
 ruff check src tests  # Linting should pass
 ```
 
-## Paper compilation (JOSS)
+### Verifying clean installation (for reviewers and CI parity)
+
+To verify that the package installs and tests pass in a fresh environment (as JOSS reviewers will test):
+
+**On your local machine:**
+```bash
+# Create a new temporary venv
+python -m venv /tmp/amanogawa-test
+source /tmp/amanogawa-test/bin/activate
+
+# Install from your local clone
+pip install -e ".[dev]"
+
+# Verify import works
+python -c "import amanogawa; print('Import OK')"
+
+# Run tests
+pytest
+
+# Clean up
+deactivate
+rm -rf /tmp/amanogawa-test
+```
+
+**Or use Docker (guaranteed clean environment):**
+```bash
+docker run -v "$PWD:/work" -w /work python:3.10-slim bash -c "
+  pip install -e '.[dev]' && \
+  python -c 'import amanogawa; print(\"Import OK\")' && \
+  pytest
+"
+```
+
+This ensures that `pip install -e .` works without additional configuration, exactly as reviewers will experience it.
 
 You can locally compile the manuscript for review and verification.
 
