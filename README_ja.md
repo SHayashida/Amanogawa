@@ -22,7 +22,7 @@
 
 ## Installation（インストール）
 
-> 動作確認・推奨は **Python 3.12.x**。現状 3.13 は避けてください。
+> 動作確認・推奨は **Python 3.10.x**。現状 3.13 は避けてください。
 
 ```bash
 python -m venv .venv
