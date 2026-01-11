@@ -7,10 +7,6 @@ Reproducible quantification of Milky Way structure from single-exposure smartpho
 [![CI](https://github.com/SHayashida/Amanogawa/actions/workflows/ci.yml/badge.svg)](https://github.com/SHayashida/Amanogawa/actions/workflows/ci.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18213565.svg)](https://doi.org/10.5281/zenodo.18213565)
 
-[Open in Colab: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
-
-[Open in Colab: Dark Morphology](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/02_dark_morphology.ipynb)
-
 English | [日本語 / Japanese](./README_ja.md)
 
 ## Statement of need
@@ -256,6 +252,9 @@ The notebooks are tutorial-style drivers:
 - `notebooks/03_astronomical_validity.ipynb`: integrated cross-checks using exported `outputs/`
 
 They are intentionally not the “core implementation”; the reusable code lives in `src/amanogawa/`.
+
+[Sample: Open in Colab: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
+[Open in Colab: Dark Morphology](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/02_dark_morphology.ipynb)
 
 ## Tests and code quality
 
