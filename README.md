@@ -4,12 +4,30 @@
 Quantifying Milky Way stellar clustering and dark-lane morphology from a single smartphone exposure.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
+[![CI](https://github.com/SHayashida/Amanogawa/actions/workflows/ci.yml/badge.svg)](https://github.com/SHayashida/Amanogawa/actions/workflows/ci.yml)
 
 [Open in Colab: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
 
 [Open in Colab: Dark Morphology](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/02_dark_morphology.ipynb)
 
 English | [日本語 / Japanese](./README_ja.md)
+
+## Quick Verification (for reviewers)
+
+Clone, install, test, and run in one block:
+
+```bash
+git clone https://github.com/SHayashida/Amanogawa.git
+cd Amanogawa
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+pytest
+ruff check src tests
+amanogawa-detect --image data/raw/IMG_5991.jpg --out outputs/ --threshold 0.05 --plot-output
+```
+
+All tests should pass (12 passed), lint should pass, and `outputs/star_detection_overlay.png` will be generated.
 
 ## Statement of need
 
@@ -58,11 +76,7 @@ apt-get install -y gcc g++ build-essential python3-dev git
 git clone https://github.com/SHayashida/Amanogawa.git
 cd Amanogawa
 
-# 3. Install photutils separately to avoid build failures
-pip install --no-cache-dir photutils
-
-# 4. Continue with installation
-pip install -r requirements.txt
+# 3. Install package with all dependencies
 pip install -e .
 ```
 
@@ -82,7 +96,7 @@ cd /Amanogawa
 pytest
 ```
 
-All tests should pass (8 passed). Some deprecation warnings from matplotlib are expected and can be safely ignored.
+All tests should pass (12 passed). Some deprecation warnings from matplotlib are expected and can be safely ignored.
 
 ## Quick start (CLI)
 
