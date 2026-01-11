@@ -45,9 +45,10 @@ paper/*.docx
 paper/*.rtf
 paper/.latexmk*
 
-# Analysis outputs (ignore generated artefacts; keep only curated Zenodo samples)
-outputs/**/results/*
-outputs/**/figures/*
+# Analysis outputs (ignore all generated files, keep only reference samples)
+outputs/**/*
+!outputs/README.md
+!outputs/sample_star_detection_overlay.png
 outputs/**/*.png
 outputs/**/*.csv
 outputs/**/*.json
