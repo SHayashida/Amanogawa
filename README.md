@@ -253,6 +253,19 @@ amanogawa-detect --image data/raw/IMG_5991.jpg --out outputs/ --threshold 0.05 -
 
 All tests should pass (12 passed), lint should pass, and `outputs/sample_star_detection_overlay.png` will be generated.
 
+## Build the JOSS paper locally (requires Docker)
+
+```bash
+cd paper
+docker run --rm \
+  --volume $PWD:/data \
+  --user $(id -u):$(id -g) \
+  --env JOURNAL=joss \
+  openjournals/inara
+```
+
+This generates `paper.pdf` (JOSS-formatted draft) from `paper.md` and `paper.bib`.
+
 ## Citation
 
 JOSS paper sources: `paper/paper.md` and `paper/paper.bib`.
