@@ -9,11 +9,24 @@ Thanks for your interest in contributing to Amanogawa.
 - Performance improvements (while keeping results reproducible).
 
 ## Development setup
+
+Clone the repository and install in development mode:
+
 ```bash
+git clone https://github.com/SHayashida/Amanogawa.git
+cd Amanogawa
+
 python -m venv .venv
 source .venv/bin/activate
-pip install -e ".[dev]"
-pytest
+
+pip install -e ".[dev]"  # Installs package + dev dependencies (pytest, ruff)
+```
+
+Verify the installation:
+
+```bash
+pytest  # All tests should pass
+ruff check src tests  # Linting should pass
 ```
 
 ## Pull requests

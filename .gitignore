@@ -66,4 +66,4 @@ outputs/**/*.json
 
 # Large temporary files
 *.tmp
-*.log.DS_Store
+*.log
