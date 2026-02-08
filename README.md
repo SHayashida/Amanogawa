@@ -31,6 +31,9 @@ source .venv/bin/activate
 
 # Install with dev extras to include ruff/pytest used in docs and CI
 pip install -e ".[dev]"
+
+# Optional: add HEIF/HEIC input support (iPhone original images)
+pip install -e ".[dev,heif]"
 ```
 
 ### Docker-based installation (for reviewers and verification)
@@ -110,6 +113,14 @@ pip install --verbose -e .
 
 **A:** Yes: `pip install -e .` installs the package. The `[dev]` extras (pytest, ruff) are only needed for development/testing. JOSS reviewers may use either; both are tested in CI.
 
+**Q: Can Amanogawa read iPhone `.heif` / `.heic` files directly?**
+
+**A:** Yes, with optional HEIF support installed:
+```bash
+pip install -e ".[heif]"
+```
+Without this extra, HEIF/HEIC inputs return a clear runtime error prompting `pillow-heif` installation.
+
 ## Image Acquisition Guide (iPhone 16/17)
 
 Amanogawa is optimized for single 30-second smartphone exposures of the Milky Way. Here is how to capture high-quality images using iPhone 16 or 17:
@@ -188,13 +199,13 @@ This creates `outputs/star_detection_overlay.png` showing detected stars overlai
 1. Spatial statistics (two-point correlation, NND, box-count fractal dimension):
 
 ```bash
-amanogawa-stats --coords outputs/IMG_5991_star_coords.csv --out outputs/
+amanogawa-stats --coords outputs/star_coords.csv --out outputs/
 ```
 
 1. Band geometry (principal axis + Gaussian/Lorentzian width fits):
 
 ```bash
-amanogawa-band --coords outputs/IMG_5991_star_coords.csv --width 4032 --height 3024 --out outputs/
+amanogawa-band --coords outputs/star_coords.csv --width 3024 --height 4032 --out outputs/
 ```
 
 1. Dark morphology (dark-lane mask + morphology metrics):
@@ -218,7 +229,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 # Load detected star coordinates
-coords = pd.read_csv("outputs/IMG_5991_star_coords.csv")
+coords = pd.read_csv("outputs/star_coords.csv")
 
 # Load original image
 img = Image.open("data/raw/IMG_5991.jpg")

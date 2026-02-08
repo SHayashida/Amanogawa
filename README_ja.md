@@ -31,6 +31,9 @@ source .venv/bin/activate
 
 # ruff/pytest を含む dev extras をデフォルトでインストール
 pip install -e ".[dev]"
+
+# 任意: iPhone の .heif/.heic 原画像を直接読む場合
+pip install -e ".[dev,heif]"
 ```
 
 ### Docker ベースのインストール（レビュア向け）
@@ -70,13 +73,13 @@ amanogawa-detect --image data/raw/IMG_5991.jpg --out outputs/ \
 1. 空間統計（2 点相関・最近傍距離・ボックスカウント次元など）:
 
 ```bash
-amanogawa-stats --coords outputs/IMG_5991_star_coords.csv --out outputs/
+amanogawa-stats --coords outputs/star_coords.csv --out outputs/
 ```
 
 1. バンド幾何（主軸推定 + ガウス/ローレンツ幅フィット）:
 
 ```bash
-amanogawa-band --coords outputs/IMG_5991_star_coords.csv --width 4032 --height 3024 --out outputs/
+amanogawa-band --coords outputs/star_coords.csv --width 3024 --height 4032 --out outputs/
 ```
 
 1. 暗黒帯形態（暗黒帯マスク + 形態メトリクス）:

@@ -31,6 +31,9 @@ dev = [
   "pytest-cov>=5",
   "ruff>=0.5",
 ]
+heif = [
+  "pillow-heif>=0.18.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/SHayashida/Amanogawa"
@@ -41,6 +44,7 @@ amanogawa-detect = "amanogawa.detection:main"
 amanogawa-stats = "amanogawa.spatial_stats:main"
 amanogawa-band = "amanogawa.band_geometry:main"
 amanogawa-dark = "amanogawa.dark_morphology:main"
+amanogawa-photometry = "amanogawa.photometry:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

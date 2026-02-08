@@ -91,6 +91,19 @@ class BandWidthFit:
     empirical_fwhm_px: float
 
 
+def _empty_band_fit() -> BandWidthFit:
+    return BandWidthFit(
+        y_centers=[],
+        density_profile=[],
+        angle_deg=float("nan"),
+        center_px=(float("nan"), float("nan")),
+        axis_ratio=float("nan"),
+        gaussian_fwhm_px=None,
+        lorentzian_fwhm_px=None,
+        empirical_fwhm_px=float("nan"),
+    )
+
+
 def band_density_profile(points: np.ndarray, *, center: tuple[float, float], angle_deg: float, nbins: int = 200) -> tuple[np.ndarray, np.ndarray]:
     """Compute a 1D star-density profile perpendicular to the principal axis."""
 
@@ -158,8 +171,23 @@ def fit_band_width(y_centers: np.ndarray, density_profile: np.ndarray) -> tuple[
 
 
 def analyze_band_geometry(points: np.ndarray, width_px: int, height_px: int, *, bins_x: int = 60, nbins_profile: int = 200) -> BandWidthFit:
-    angle_deg, center, axis_ratio = pca_principal_axis(points, width_px, height_px, bins_x=bins_x)
-    y_centers, density_profile = band_density_profile(points, center=center, angle_deg=angle_deg, nbins=nbins_profile)
+    points = np.asarray(points, dtype=float)
+    if len(points) == 0:
+        return _empty_band_fit()
+
+    # Guard against empty histograms when all points fall outside image bounds.
+    in_bounds = (
+        (points[:, 0] >= 0)
+        & (points[:, 0] < float(width_px))
+        & (points[:, 1] >= 0)
+        & (points[:, 1] < float(height_px))
+    )
+    points_in_bounds = points[in_bounds]
+    if len(points_in_bounds) == 0:
+        return _empty_band_fit()
+
+    angle_deg, center, axis_ratio = pca_principal_axis(points_in_bounds, width_px, height_px, bins_x=bins_x)
+    y_centers, density_profile = band_density_profile(points_in_bounds, center=center, angle_deg=angle_deg, nbins=nbins_profile)
     gauss_fwhm, lorentz_fwhm, empirical = fit_band_width(y_centers, density_profile)
     return BandWidthFit(
         y_centers=y_centers.tolist(),
@@ -189,10 +217,13 @@ def main(argv: Optional[list[str]] = None) -> int:
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
     df = pd.read_csv(args.coords)
-    points = df[["x", "y"]].to_numpy()
+    points = df[["x", "y"]].to_numpy(dtype=float)
 
     fit = analyze_band_geometry(points, int(args.width), int(args.height), bins_x=int(args.bins_x), nbins_profile=int(args.profile_bins))
+
+    is_empty = (not np.isfinite(fit.angle_deg)) and len(fit.y_centers) == 0
     payload = {
+        "status": "no_detections" if is_empty else "ok",
         "principal_axis": {"angle_deg": fit.angle_deg, "center_px": [float(fit.center_px[0]), float(fit.center_px[1])], "axis_ratio": fit.axis_ratio},
         "band_width_measurements": {
             "gaussian_fwhm_px": fit.gaussian_fwhm_px,

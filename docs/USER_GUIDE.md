@@ -158,9 +158,8 @@ Amanogawa is optimized for analyzing single 30-second smartphone long-exposure i
 ### Spatial Statistics (`amanogawa-stats`)
 
 **Outputs:**
-- Correlation function: `two_point_correlation.csv`
-- Nearest-neighbor distances: `nearest_neighbor_distances.csv`
-- Fractal dimension: `fractal_dimension.json`
+- `spatial_statistics_analysis.json`: Combined nearest-neighbor, fractal, and 2PCF summary
+- `magnitude_analysis.json` (optional): Magnitude-stratified clustering summary when `--magnitude-bins` is provided
 
 **Key metrics:**
 - **ξ(r)** (xi): Two-point correlation function - measures clustering excess over random distribution
@@ -173,19 +172,19 @@ Amanogawa is optimized for analyzing single 30-second smartphone long-exposure i
 ### Band Geometry (`amanogawa-band`)
 
 **Outputs:**
-- `band_geometry.json`: Principal axis angle, band width estimates
+- `band_geometry_analysis.json`: Principal axis angle, center, axis ratio, and band width estimates
 
 **Key metrics:**
-- **principal_angle** (degrees): Milky Way band orientation in image coordinates
-- **width_gaussian** (pixels): FWHM assuming Gaussian profile perpendicular to band
-- **width_lorentzian** (pixels): FWHM assuming Lorentzian (heavy-tailed) profile
+- **principal_axis.angle_deg** (degrees): Milky Way band orientation in image coordinates
+- **band_width_measurements.gaussian_fwhm_px** (pixels): FWHM assuming Gaussian profile perpendicular to band
+- **band_width_measurements.lorentzian_fwhm_px** (pixels): FWHM assuming Lorentzian (heavy-tailed) profile
 - Convert to angular units: `width_degrees = width_pixels * plate_scale_arcsec_per_pixel / 3600`
 
 ### Dark Morphology (`amanogawa-dark`)
 
 **Outputs:**
 - `dark_lane_mask.png`: Binary mask of dark regions
-- `dark_morphology_summary.json`: Dark lane statistics
+- `improved_dark_detection.json`: Dark lane statistics and watershed-based morphology summary
 
 **Key metrics:**
 - **area_fraction**: Percentage of image covered by dark lanes

@@ -10,6 +10,46 @@ import pandas as pd
 from scipy.spatial import cKDTree
 
 
+def _safe_mean(values: np.ndarray) -> float | None:
+    arr = np.asarray(values, dtype=float)
+    finite = arr[np.isfinite(arr)]
+    if finite.size == 0:
+        return None
+    return float(np.mean(finite))
+
+
+def _safe_std(values: np.ndarray) -> float | None:
+    arr = np.asarray(values, dtype=float)
+    finite = arr[np.isfinite(arr)]
+    if finite.size == 0:
+        return None
+    return float(np.std(finite))
+
+
+def _safe_median(values: np.ndarray) -> float | None:
+    arr = np.asarray(values, dtype=float)
+    finite = arr[np.isfinite(arr)]
+    if finite.size == 0:
+        return None
+    return float(np.median(finite))
+
+
+def _safe_min(values: np.ndarray) -> float | None:
+    arr = np.asarray(values, dtype=float)
+    finite = arr[np.isfinite(arr)]
+    if finite.size == 0:
+        return None
+    return float(np.min(finite))
+
+
+def _safe_max(values: np.ndarray) -> float | None:
+    arr = np.asarray(values, dtype=float)
+    finite = arr[np.isfinite(arr)]
+    if finite.size == 0:
+        return None
+    return float(np.max(finite))
+
+
 def nearest_neighbor_distances(points: np.ndarray) -> np.ndarray:
     """Nearest-neighbor distances for a 2D point set."""
 
@@ -117,6 +157,8 @@ def _build_parser() -> argparse.ArgumentParser:
     p.add_argument("--out", required=True, help="Output directory")
     p.add_argument("--width", type=int, default=None, help="Image width in pixels (optional if in CSV metadata)")
     p.add_argument("--height", type=int, default=None, help="Image height in pixels")
+    p.add_argument("--max-points", type=int, default=3500, help="Maximum sampled points for 2PCF (default: 3500)")
+    p.add_argument("--seed", type=int, default=42, help="Random seed for deterministic sampling (default: 42)")
     return p
 
 
@@ -126,7 +168,32 @@ def main(argv: Optional[list[str]] = None) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     df = pd.read_csv(args.coords)
-    points = df[["x", "y"]].to_numpy()
+    points = df[["x", "y"]].to_numpy(dtype=float)
+    seed = int(args.seed)
+    max_points = int(args.max_points)
+    rng = np.random.default_rng(seed)
+
+    # Empty coordinate tables are valid and should not crash the CLI.
+    if len(points) == 0:
+        width = int(args.width) if args.width is not None else 0
+        height = int(args.height) if args.height is not None else 0
+        payload = {
+            "status": "no_detections",
+            "image_size": {"width_px": width, "height_px": height},
+            "sampling": {"seed": seed, "max_points": max_points},
+            "nearest_neighbor": {"mean": None, "std": None, "median": None, "min": None, "max": None},
+            "fractal_dimension": None,
+            "fractal_boxcount": {"eps": [], "box_counts": []},
+            "two_point_correlation": {"r_centers": [], "xi_values": [], "xi_mean": None, "xi_max": None},
+        }
+        (out_dir / "spatial_statistics_analysis.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+        if args.magnitude_bins:
+            (out_dir / "magnitude_analysis.json").write_text(
+                json.dumps({"status": "no_detections", "bins": {}}, indent=2),
+                encoding="utf-8",
+            )
+        return 0
 
     # If width/height aren't provided, fall back to max coords + 1.
     width = int(args.width) if args.width else int(np.nanmax(points[:, 0]) + 1)
@@ -137,23 +204,26 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     r_max = min(width, height) / 3.0
     r_bins = np.linspace(5.0, r_max, 22)
-    rc, xi = two_point_correlation_function(points, width, height, r_bins, max_points=3500)
+    rc, xi = two_point_correlation_function(points, width, height, r_bins, max_points=max_points, rng=rng)
 
     payload = {
+        "status": "ok",
+        "image_size": {"width_px": width, "height_px": height},
+        "sampling": {"seed": seed, "max_points": max_points},
         "nearest_neighbor": {
-            "mean": float(np.nanmean(nnd)),
-            "std": float(np.nanstd(nnd)),
-            "median": float(np.nanmedian(nnd)),
-            "min": float(np.nanmin(nnd)),
-            "max": float(np.nanmax(nnd)),
+            "mean": _safe_mean(nnd),
+            "std": _safe_std(nnd),
+            "median": _safe_median(nnd),
+            "min": _safe_min(nnd),
+            "max": _safe_max(nnd),
         },
-        "fractal_dimension": float(D),
+        "fractal_dimension": None if not np.isfinite(D) else float(D),
         "fractal_boxcount": {"eps": eps.tolist(), "box_counts": Ns.tolist()},
         "two_point_correlation": {
             "r_centers": rc.tolist(),
             "xi_values": xi.tolist(),
-            "xi_mean": float(np.nanmean(xi)),
-            "xi_max": float(np.nanmax(xi)),
+            "xi_mean": _safe_mean(xi),
+            "xi_max": _safe_max(xi),
         },
     }
     (out_dir / "spatial_statistics_analysis.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -166,12 +236,19 @@ def main(argv: Optional[list[str]] = None) -> int:
         out: dict[str, object] = {"bins": {}}
         for bin_name, g in mdf.groupby("mag_bin"):
             g_points = g[["x", "y"]].to_numpy(dtype=float)
-            rc_b, xi_b = two_point_correlation_function(g_points, width, height, r_bins, max_points=3500)
+            rc_b, xi_b = two_point_correlation_function(
+                g_points,
+                width,
+                height,
+                r_bins,
+                max_points=max_points,
+                rng=rng,
+            )
             out["bins"][str(bin_name)] = {
                 "n_points": int(len(g_points)),
                 "r_centers": rc_b.tolist(),
                 "xi_values": xi_b.tolist(),
-                "xi_mean": float(np.nanmean(xi_b)) if len(xi_b) else float("nan"),
+                "xi_mean": _safe_mean(xi_b),
             }
 
         (out_dir / "magnitude_analysis.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
