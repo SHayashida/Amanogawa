@@ -180,6 +180,26 @@ Once you have your image, load it into the Amanogawa pipeline using the CLI comm
 
 ## Quick start (CLI)
 
+1. Full pipeline in one command (`detect -> stats -> band -> dark`):
+
+```bash
+amanogawa-run --image-dir data/raw --out outputs/run --recursive
+```
+
+For each image, this writes:
+
+- `outputs/run/<image_slug>/detection/...`
+- `outputs/run/<image_slug>/spatial_stats/...`
+- `outputs/run/<image_slug>/band_geometry/...`
+- `outputs/run/<image_slug>/dark_morphology/...`
+- `outputs/run/run_manifest.json` (overall run summary)
+
+Resume mode (skip already finished steps):
+
+```bash
+amanogawa-run --image-dir data/raw --out outputs/run --recursive --resume
+```
+
 1. Star detection (writes coordinates CSV + threshold sweep summaries):
 
 ```bash

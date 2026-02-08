@@ -144,6 +144,29 @@ Amanogawa is optimized for analyzing single 30-second smartphone long-exposure i
 
 ## Output Metrics Explained
 
+### Full Pipeline Runner (`amanogawa-run`)
+
+`amanogawa-run` orchestrates:
+
+1. `amanogawa-detect`
+2. `amanogawa-stats`
+3. `amanogawa-band`
+4. `amanogawa-dark`
+
+for one image or every image in a folder.
+
+**Outputs:**
+- `<out>/<image_slug>/detection/*`
+- `<out>/<image_slug>/spatial_stats/*`
+- `<out>/<image_slug>/band_geometry/*`
+- `<out>/<image_slug>/dark_morphology/*`
+- `<out>/run_manifest.json` (run-wide status, per-image step status, and parameters)
+
+**Useful flags:**
+- `--resume`: Skip steps with existing outputs
+- `--min-stars-stats N`: Quality gate for spatial stats
+- `--min-stars-band N`: Quality gate for band fitting
+
 ### Star Detection (`amanogawa-detect`)
 
 **Outputs:**

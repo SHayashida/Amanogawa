@@ -45,6 +45,7 @@ amanogawa-stats = "amanogawa.spatial_stats:main"
 amanogawa-band = "amanogawa.band_geometry:main"
 amanogawa-dark = "amanogawa.dark_morphology:main"
 amanogawa-photometry = "amanogawa.photometry:main"
+amanogawa-run = "amanogawa.run:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

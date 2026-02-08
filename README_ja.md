@@ -63,6 +63,26 @@ pip install -e ".[dev]"
 
 `data/raw/` に画像を置いて実行します（リポジトリには `data/raw/IMG_5991.jpg` が同梱されています）。
 
+1. ワンコマンド実行（`detect -> stats -> band -> dark`）:
+
+```bash
+amanogawa-run --image-dir data/raw --out outputs/run --recursive
+```
+
+画像ごとに次を出力します:
+
+- `outputs/run/<image_slug>/detection/...`
+- `outputs/run/<image_slug>/spatial_stats/...`
+- `outputs/run/<image_slug>/band_geometry/...`
+- `outputs/run/<image_slug>/dark_morphology/...`
+- `outputs/run/run_manifest.json`（実行全体サマリ）
+
+既存成果物を再利用して再開する場合:
+
+```bash
+amanogawa-run --image-dir data/raw --out outputs/run --recursive --resume
+```
+
 1. 星検出（座標 CSV と閾値スイープの要約を出力）:
 
 ```bash

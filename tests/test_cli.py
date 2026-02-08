@@ -53,6 +53,127 @@ def test_dark_help():
     assert "usage" in result.stdout.lower()
 
 
+def test_run_help():
+    """Test that amanogawa-run --help runs without error."""
+    result = subprocess.run(
+        [sys.executable, "-m", "amanogawa.run", "--help"],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    assert "amanogawa-run" in result.stdout or "usage" in result.stdout.lower()
+
+
+def test_run_single_image_executes_full_pipeline(tmp_path) -> None:
+    image_path = tmp_path / "frame.png"
+    out_dir = tmp_path / "run_out"
+
+    arr = np.zeros((64, 64), dtype=np.uint8)
+    arr[14, 18] = 255
+    arr[31, 29] = 220
+    arr[50, 45] = 210
+    Image.fromarray(arr, mode="L").save(image_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "amanogawa.run",
+            "--image",
+            str(image_path),
+            "--out",
+            str(out_dir),
+            "--threshold",
+            "0.2",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+
+    manifest = json.loads((out_dir / "run_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["status"] == "ok"
+    assert manifest["num_images"] == 1
+
+    image_payload = manifest["images"][0]
+    slug = image_payload["slug"]
+    assert (out_dir / slug / "detection" / "detection_summary.json").exists()
+    assert (out_dir / slug / "spatial_stats" / "spatial_statistics_analysis.json").exists()
+    assert (out_dir / slug / "band_geometry" / "band_geometry_analysis.json").exists()
+    assert (out_dir / slug / "dark_morphology" / "improved_dark_detection.json").exists()
+
+
+def test_run_resume_skips_existing_outputs(tmp_path) -> None:
+    image_path = tmp_path / "frame.png"
+    out_dir = tmp_path / "run_out"
+
+    arr = np.zeros((64, 64), dtype=np.uint8)
+    arr[12, 20] = 255
+    arr[30, 35] = 230
+    Image.fromarray(arr, mode="L").save(image_path)
+
+    cmd = [
+        sys.executable,
+        "-m",
+        "amanogawa.run",
+        "--image",
+        str(image_path),
+        "--out",
+        str(out_dir),
+        "--threshold",
+        "0.2",
+    ]
+    first = subprocess.run(cmd, capture_output=True, text=True)
+    assert first.returncode == 0
+
+    second = subprocess.run(cmd + ["--resume"], capture_output=True, text=True)
+    assert second.returncode == 0
+
+    manifest = json.loads((out_dir / "run_manifest.json").read_text(encoding="utf-8"))
+    image_payload = manifest["images"][0]
+    statuses = {name: step["status"] for name, step in image_payload["steps"].items()}
+    assert statuses == {"detect": "skipped", "stats": "skipped", "band": "skipped", "dark": "skipped"}
+
+
+def test_run_image_dir_processes_all_images(tmp_path) -> None:
+    image_dir = tmp_path / "images"
+    image_dir.mkdir(parents=True, exist_ok=True)
+    out_dir = tmp_path / "run_batch"
+
+    arr = np.zeros((48, 48), dtype=np.uint8)
+    arr[10, 12] = 255
+    arr[25, 20] = 220
+    Image.fromarray(arr, mode="L").save(image_dir / "a.png")
+    Image.fromarray(arr, mode="L").save(image_dir / "b.jpg")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "amanogawa.run",
+            "--image-dir",
+            str(image_dir),
+            "--out",
+            str(out_dir),
+            "--threshold",
+            "0.2",
+            "--skip-dark",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+
+    manifest = json.loads((out_dir / "run_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["status"] == "ok"
+    assert manifest["num_images"] == 2
+
+    for slug in ("a_png", "b_jpg"):
+        assert (out_dir / slug / "detection" / "detection_summary.json").exists()
+        assert (out_dir / slug / "spatial_stats" / "spatial_statistics_analysis.json").exists()
+        assert (out_dir / slug / "band_geometry" / "band_geometry_analysis.json").exists()
+
+
 def test_detect_image_dir_processes_all_images(tmp_path) -> None:
     image_dir = tmp_path / "images"
     image_dir.mkdir(parents=True, exist_ok=True)
