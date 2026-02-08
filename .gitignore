@@ -9,6 +9,7 @@ __pycache__/
 
 # Packaging/build artifacts
 *.egg-info/
+src/amanogawa.egg-info/
 build/
 dist/
 
@@ -35,7 +36,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Development documentation (internal notes, not user-facing)
+# Internal migration notes
 docs/notebook_api_migration_ja.md
 
 # Paper build artifacts (keep sources under paper/ tracked)
