@@ -167,6 +167,21 @@ for one image or every image in a folder.
 - `--min-stars-stats N`: Quality gate for spatial stats
 - `--min-stars-band N`: Quality gate for band fitting
 
+### FITS Export (`amanogawa-fits-export`)
+
+**Purpose:**
+- Package run outputs into a FITS container with standardized summary headers.
+
+**Outputs:**
+- Primary HDU with mapped metadata cards
+- `STARS` table extension when `--coords` is supplied
+
+**Input mapping examples:**
+- `--detection-json`: `detection_summary.json`
+- `--stats-json`: `spatial_statistics_analysis.json`
+- `--band-json`: `band_geometry_analysis.json`
+- `--dark-json`: `improved_dark_detection.json`
+
 ### Star Detection (`amanogawa-detect`)
 
 **Outputs:**

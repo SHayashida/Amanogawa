@@ -64,6 +64,17 @@ def test_run_help():
     assert "amanogawa-run" in result.stdout or "usage" in result.stdout.lower()
 
 
+def test_fits_export_help():
+    """Test that amanogawa-fits-export --help runs without error."""
+    result = subprocess.run(
+        [sys.executable, "-m", "amanogawa.fits_export", "--help"],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    assert "amanogawa-fits-export" in result.stdout or "usage" in result.stdout.lower()
+
+
 def test_run_single_image_executes_full_pipeline(tmp_path) -> None:
     image_path = tmp_path / "frame.png"
     out_dir = tmp_path / "run_out"

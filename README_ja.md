@@ -4,7 +4,7 @@
 単一のスマホ長時間露光画像から、天の川構造を再現可能に定量化します。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18213565.svg)](https://doi.org/10.5281/zenodo.18213565)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18213564.svg)](https://doi.org/10.5281/zenodo.18213564)
 
 [Colab で開く: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
 
@@ -17,8 +17,10 @@ Amanogawa は、オープンソース（MIT ライセンス）の Python パッ�
 ## What is included（構成）
 
 - **コアライブラリ:** `src/amanogawa/`（pip インストール可能）
+- **校正モジュール（P1最小実装）:** `src/amanogawa/calibration/`（ダーク/フラット/周辺減光補正）
 - **CLI:** `amanogawa-*` のコマンド群
 - **ノートブック:** `notebooks/`（チュートリアル/再現用）
+- **科学ドキュメント:** `docs/scientific_assumptions.md`, `docs/calibration_protocol.md`, `docs/validation_plan.md`, `docs/reproducibility.md`
 - **JOSS 原稿:** `paper/paper.md`（+ `paper/paper.bib`）
 
 ## Installation（インストール）
@@ -120,6 +122,18 @@ amanogawa-dark --image data/raw/IMG_5991.jpg --out outputs/dark_morphology/resul
 
 - `outputs/dark_morphology/results/improved_dark_detection.json`
 - `outputs/dark_morphology/results/dark_lane_mask.png`
+
+1. FITS 出力（ヘッダ標準化 + 任意で星カタログ拡張）:
+
+```bash
+amanogawa-fits-export \
+  --coords outputs/star_coords.csv \
+  --detection-json outputs/detection_summary.json \
+  --stats-json outputs/spatial_statistics_analysis.json \
+  --band-json outputs/band_geometry_analysis.json \
+  --dark-json outputs/dark_morphology/results/improved_dark_detection.json \
+  --out outputs/amanogawa_summary.fits
+```
 
 ## Notebooks（ノートブック）
 

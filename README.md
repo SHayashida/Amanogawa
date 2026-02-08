@@ -5,7 +5,7 @@ Reproducible quantification of Milky Way structure from single-exposure smartpho
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 [![CI](https://github.com/SHayashida/Amanogawa/actions/workflows/ci.yml/badge.svg)](https://github.com/SHayashida/Amanogawa/actions/workflows/ci.yml)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18213565.svg)](https://doi.org/10.5281/zenodo.18213565)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18213564.svg)](https://doi.org/10.5281/zenodo.18213564)
 
 English | [日本語 / Japanese](./README_ja.md)
 
@@ -16,9 +16,11 @@ Amanogawa is an open-source, MIT-licensed Python package and reproducible workfl
 ## What is included
 
 - **Core library:** installable Python package under `src/amanogawa/`.
+- **Calibration module (P1 baseline):** `src/amanogawa/calibration/` with dark/flat/vignetting correctors.
 - **CLIs:** entry points for the main steps (`amanogawa-*`).
 - **Notebooks:** tutorials under `notebooks/` that exercise the library and reproduce figures.
 - **User guide:** `docs/USER_GUIDE.md` - FAQ, troubleshooting, and output metrics explained.
+- **Scientific documentation:** `docs/scientific_assumptions.md`, `docs/calibration_protocol.md`, `docs/validation_plan.md`, `docs/reproducibility.md`.
 - **JOSS paper:** `paper/paper.md` (+ `paper/paper.bib`).
 
 ## Installation
@@ -247,6 +249,18 @@ This writes:
 - `outputs/dark_morphology/results/improved_dark_detection.json`
 - `outputs/dark_morphology/results/dark_lane_mask.png`
 
+1. FITS export (metadata header mapping + optional star table):
+
+```bash
+amanogawa-fits-export \
+  --coords outputs/star_coords.csv \
+  --detection-json outputs/detection_summary.json \
+  --stats-json outputs/spatial_statistics_analysis.json \
+  --band-json outputs/band_geometry_analysis.json \
+  --dark-json outputs/dark_morphology/results/improved_dark_detection.json \
+  --out outputs/amanogawa_summary.fits
+```
+
 ### Custom visualization with matplotlib
 
 You can create custom plots using the CSV output. Here's a simple example:
@@ -351,7 +365,7 @@ If you use Amanogawa in your research, please cite the software:
   title = {Amanogawa: Reproducible quantification of Milky Way structure from single-exposure smartphone images},
   author = {Hayashida, Shunya},
   year = {2026},
-  doi = {10.5281/zenodo.18213565},
+  doi = {10.5281/zenodo.18213564},
   url = {https://github.com/SHayashida/Amanogawa}
 }
 ```
