@@ -2,6 +2,7 @@
 amanogawa-band = amanogawa.band_geometry:main
 amanogawa-dark = amanogawa.dark_morphology:main
 amanogawa-detect = amanogawa.detection:main
+amanogawa-fits-export = amanogawa.fits_export:main
 amanogawa-photometry = amanogawa.photometry:main
 amanogawa-run = amanogawa.run:main
 amanogawa-stats = amanogawa.spatial_stats:main

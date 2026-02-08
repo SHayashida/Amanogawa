@@ -298,13 +298,13 @@ Below is an example of the star detection visualization generated with the `--pl
 
 ## Notebooks
 
-The notebooks are tutorial-style drivers:
+The notebooks are lightweight tutorial/demo drivers:
 
 - `notebooks/01_band_analysis.ipynb`: band geometry + clustering pipeline
 - `notebooks/02_dark_morphology.ipynb`: dark-lane morphology pipeline
-- `notebooks/03_astronomical_validity.ipynb`: integrated cross-checks using exported `outputs/`
+- `notebooks/03_astronomical_validity.ipynb`: run-manifest based consistency checks
 
-They are intentionally not the “core implementation”; the reusable code lives in `src/amanogawa/`.
+They are intentionally not the core implementation. All scientific core logic lives in `src/amanogawa/`, and notebooks call package APIs as thin wrappers suitable for web/Colab trials.
 
 [Open in Colab: Band Analysis](https://colab.research.google.com/github/SHayashida/Amanogawa/blob/main/notebooks/01_band_analysis.ipynb)
 

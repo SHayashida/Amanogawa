@@ -137,11 +137,11 @@ amanogawa-fits-export \
 
 ## Notebooks（ノートブック）
 
-ノートブックはチュートリアルとして提供しています（実装の本体は `src/amanogawa/`）。
+ノートブックは Web/Colab で試せる軽量デモとして提供しています（実装本体は `src/amanogawa/`）。
 
 - `notebooks/01_band_analysis.ipynb`: バンド幾何 + クラスタリング
 - `notebooks/02_dark_morphology.ipynb`: 暗黒帯形態解析
-- `notebooks/03_astronomical_validity.ipynb`: `outputs/` を読み込む統合クロスチェック
+- `notebooks/03_astronomical_validity.ipynb`: `amanogawa-run` の `run_manifest.json` を使った整合チェック
 
 ## Tests and code quality（テスト/品質）
 
