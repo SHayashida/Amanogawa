@@ -150,6 +150,7 @@ Amanogawa is optimized for analyzing single 30-second smartphone long-exposure i
 - `star_coords.csv`: Detected star positions (x, y) and size (r) in pixels
 - `detection_summary.json`: Metadata (image size, detection parameters, star count)
 - `threshold_sweep_summary.csv`: Star counts across detection thresholds (sensitivity analysis)
+- `batch_detection_summary.json` (directory mode): Per-image summary when `--image-dir` is used
 
 **Key metrics:**
 - **N (star count)**: Total detected point sources at given threshold

@@ -196,6 +196,14 @@ amanogawa-detect --image data/raw/IMG_5991.jpg --out outputs/ \
 
 This creates `outputs/star_detection_overlay.png` showing detected stars overlaid on the original image.
 
+To process every image in a folder, use `--image-dir`:
+
+```bash
+amanogawa-detect --image-dir data/raw --out outputs/batch --recursive
+```
+
+This creates one subdirectory per image under `outputs/batch/` and writes `batch_detection_summary.json`.
+
 1. Spatial statistics (two-point correlation, NND, box-count fractal dimension):
 
 ```bash

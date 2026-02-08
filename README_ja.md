@@ -70,6 +70,14 @@ amanogawa-detect --image data/raw/IMG_5991.jpg --out outputs/ \
   --threshold-min 0.03 --threshold-max 0.08 --steps 10
 ```
 
+画像フォルダ内のすべての画像を処理する場合:
+
+```bash
+amanogawa-detect --image-dir data/raw --out outputs/batch --recursive
+```
+
+`outputs/batch/` 以下に画像ごとのサブディレクトリと `batch_detection_summary.json` が生成されます。
+
 1. 空間統計（2 点相関・最近傍距離・ボックスカウント次元など）:
 
 ```bash

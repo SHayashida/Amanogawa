@@ -6,6 +6,7 @@ import sys
 
 import numpy as np
 import pandas as pd
+from PIL import Image
 
 
 def test_detect_help():
@@ -50,6 +51,43 @@ def test_dark_help():
     )
     assert result.returncode == 0
     assert "usage" in result.stdout.lower()
+
+
+def test_detect_image_dir_processes_all_images(tmp_path) -> None:
+    image_dir = tmp_path / "images"
+    image_dir.mkdir(parents=True, exist_ok=True)
+    out_dir = tmp_path / "out_batch"
+
+    arr = np.zeros((32, 32), dtype=np.uint8)
+    arr[10, 10] = 255
+    arr[22, 19] = 200
+    Image.fromarray(arr, mode="L").save(image_dir / "a.png")
+    Image.fromarray(arr, mode="L").save(image_dir / "b.jpg")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "amanogawa.detection",
+            "--image-dir",
+            str(image_dir),
+            "--out",
+            str(out_dir),
+            "--threshold",
+            "0.2",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+
+    payload = json.loads((out_dir / "batch_detection_summary.json").read_text(encoding="utf-8"))
+    assert payload["status"] == "ok"
+    assert payload["num_images"] == 2
+
+    for folder in ("a_png", "b_jpg"):
+        assert (out_dir / folder / "star_coords.csv").exists()
+        assert (out_dir / folder / "detection_summary.json").exists()
 
 
 def test_stats_empty_coords_returns_no_detections(tmp_path) -> None:
