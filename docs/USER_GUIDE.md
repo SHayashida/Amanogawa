@@ -152,6 +152,7 @@ Amanogawa is optimized for analyzing single 30-second smartphone long-exposure i
 2. `amanogawa-stats`
 3. `amanogawa-band`
 4. `amanogawa-dark`
+5. `visibility`
 
 for one image or every image in a folder.
 
@@ -160,6 +161,7 @@ for one image or every image in a folder.
 - `<out>/<image_slug>/spatial_stats/*`
 - `<out>/<image_slug>/band_geometry/*`
 - `<out>/<image_slug>/dark_morphology/*`
+- `<out>/<image_slug>/visibility/*`
 - `<out>/run_manifest.json` (run-wide status, per-image step status, and parameters)
 
 **Useful flags:**
@@ -229,6 +231,22 @@ for one image or every image in a folder.
 - **area_fraction**: Percentage of image covered by dark lanes
 - **mean_intensity**: Average brightness of dark regions
 - **perimeter**: Total edge length of dark lanes (indicates complexity)
+
+### Visibility Score (`visibility`)
+
+**Outputs:**
+- `visibility_features.json`: Raw visibility features, threshold-sweep summaries, and device metadata snapshot
+- `visibility_score.json`: Branch scores, total score, grade, `qc_status`, and `research_usable`
+
+**Key metrics:**
+- **visibility_score**: 0-100 image-based relative visibility/analyzability score
+- **qc_status**: `pass`, `warn`, or `fail`
+- **research_usable**: `true` only when the current scientific reuse gate passes
+
+**Important interpretation note:**
+- Visibility v1 scores the evidence contained in the submitted image.
+- It does **not** directly estimate true sky quality or absolute light pollution.
+- Device limitations, camera-app processing, blur, haze, and exposure choices can lower the score.
 
 ## Common Issues and Solutions
 

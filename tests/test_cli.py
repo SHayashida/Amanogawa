@@ -112,6 +112,8 @@ def test_run_single_image_executes_full_pipeline(tmp_path) -> None:
     assert (out_dir / slug / "spatial_stats" / "spatial_statistics_analysis.json").exists()
     assert (out_dir / slug / "band_geometry" / "band_geometry_analysis.json").exists()
     assert (out_dir / slug / "dark_morphology" / "improved_dark_detection.json").exists()
+    assert (out_dir / slug / "visibility" / "visibility_features.json").exists()
+    assert (out_dir / slug / "visibility" / "visibility_score.json").exists()
 
 
 def test_run_resume_skips_existing_outputs(tmp_path) -> None:
@@ -143,7 +145,13 @@ def test_run_resume_skips_existing_outputs(tmp_path) -> None:
     manifest = json.loads((out_dir / "run_manifest.json").read_text(encoding="utf-8"))
     image_payload = manifest["images"][0]
     statuses = {name: step["status"] for name, step in image_payload["steps"].items()}
-    assert statuses == {"detect": "skipped", "stats": "skipped", "band": "skipped", "dark": "skipped"}
+    assert statuses == {
+        "detect": "skipped",
+        "stats": "skipped",
+        "band": "skipped",
+        "dark": "skipped",
+        "visibility": "skipped",
+    }
 
 
 def test_run_image_dir_processes_all_images(tmp_path) -> None:
@@ -183,6 +191,7 @@ def test_run_image_dir_processes_all_images(tmp_path) -> None:
         assert (out_dir / slug / "detection" / "detection_summary.json").exists()
         assert (out_dir / slug / "spatial_stats" / "spatial_statistics_analysis.json").exists()
         assert (out_dir / slug / "band_geometry" / "band_geometry_analysis.json").exists()
+        assert (out_dir / slug / "visibility" / "visibility_score.json").exists()
 
 
 def test_detect_image_dir_processes_all_images(tmp_path) -> None:

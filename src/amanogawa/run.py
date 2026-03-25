@@ -17,6 +17,7 @@ from .detection import (
     discover_images,
 )
 from .spatial_stats import main as stats_main
+from .visibility import write_visibility_outputs
 
 
 def _utc_now_iso() -> str:
@@ -132,6 +133,23 @@ def _run_dark_step(*, image_path: Path, out_dir: Path) -> None:
         raise RuntimeError(f"amanogawa-dark exited with status {rc}")
 
 
+def _run_visibility_step(
+    *,
+    image_path: Path,
+    detection_dir: Path,
+    band_dir: Path,
+    dark_dir: Path,
+    out_dir: Path,
+) -> dict[str, object]:
+    return write_visibility_outputs(
+        image_path=image_path,
+        detection_summary_json=detection_dir / "detection_summary.json",
+        band_geometry_json=(band_dir / "band_geometry_analysis.json") if (band_dir / "band_geometry_analysis.json").exists() else None,
+        dark_morphology_json=(dark_dir / "improved_dark_detection.json") if (dark_dir / "improved_dark_detection.json").exists() else None,
+        out_dir=out_dir,
+    )
+
+
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="amanogawa-run",
@@ -164,6 +182,7 @@ def _build_parser() -> argparse.ArgumentParser:
     p.add_argument("--skip-stats", action="store_true")
     p.add_argument("--skip-band", action="store_true")
     p.add_argument("--skip-dark", action="store_true")
+    p.add_argument("--skip-visibility", action="store_true")
 
     # Quality gates
     p.add_argument(
@@ -215,6 +234,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         stats_dir = image_out / "spatial_stats"
         band_dir = image_out / "band_geometry"
         dark_dir = image_out / "dark_morphology"
+        visibility_dir = image_out / "visibility"
 
         report: dict[str, object] = {
             "image": image_path.name,
@@ -378,6 +398,47 @@ def main(argv: Optional[list[str]] = None) -> int:
                     image_reports.append(report)
                     break
 
+        # Visibility
+        if bool(args.skip_visibility):
+            steps["visibility"] = {"status": "skipped", "reason": "disabled"}
+        elif detection_meta is None:
+            steps["visibility"] = {"status": "skipped", "reason": "missing_detection"}
+        elif bool(args.resume) and (visibility_dir / "visibility_score.json").exists() and (visibility_dir / "visibility_features.json").exists():
+            steps["visibility"] = {
+                "status": "skipped",
+                "reason": "resume",
+                "out_dir": str(visibility_dir),
+                "features_json": str(visibility_dir / "visibility_features.json"),
+                "score_json": str(visibility_dir / "visibility_score.json"),
+            }
+        else:
+            try:
+                visibility_meta = _run_visibility_step(
+                    image_path=image_path,
+                    detection_dir=detection_dir,
+                    band_dir=band_dir,
+                    dark_dir=dark_dir,
+                    out_dir=visibility_dir,
+                )
+                steps["visibility"] = {
+                    "status": "ok",
+                    "out_dir": str(visibility_dir),
+                    "features_json": str(visibility_meta["features_json"]),
+                    "score_json": str(visibility_meta["score_json"]),
+                    "visibility_score": float(visibility_meta["visibility_score"]),
+                    "qc_status": str(visibility_meta["qc_status"]),
+                    "research_usable": bool(visibility_meta["research_usable"]),
+                }
+                report["visibility_score"] = float(visibility_meta["visibility_score"])
+                report["visibility_qc_status"] = str(visibility_meta["qc_status"])
+            except Exception as exc:
+                total_errors += 1
+                steps["visibility"] = {"status": "error", "error": str(exc), "out_dir": str(visibility_dir)}
+                if bool(args.fail_fast):
+                    report["status"] = "error"
+                    image_reports.append(report)
+                    break
+
         has_error = any(step.get("status") == "error" for step in steps.values())
         report["status"] = "error" if has_error else "ok"
         image_reports.append(report)
@@ -400,6 +461,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 "stats": not bool(args.skip_stats),
                 "band": not bool(args.skip_band),
                 "dark": not bool(args.skip_dark),
+                "visibility": not bool(args.skip_visibility),
             },
             "quality_gates": {
                 "min_stars_stats": int(args.min_stars_stats),

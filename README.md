@@ -21,6 +21,9 @@ Amanogawa is an open-source, MIT-licensed Python package and reproducible workfl
 - **Notebooks:** tutorials under `notebooks/` that exercise the library and reproduce figures.
 - **User guide:** `docs/USER_GUIDE.md` - FAQ, troubleshooting, and output metrics explained.
 - **Scientific documentation:** `docs/scientific_assumptions.md`, `docs/calibration_protocol.md`, `docs/validation_plan.md`, `docs/reproducibility.md`.
+- **Development roadmap:** `docs/roadmap.md`.
+- **JOSS submission checklist:** `docs/joss_submission_checklist.md`.
+- **Visibility scoring spec:** `docs/minimum_data_spec.md`.
 - **JOSS paper:** `paper/paper.md` (+ `paper/paper.bib`).
 
 ## Installation
@@ -194,6 +197,7 @@ For each image, this writes:
 - `outputs/run/<image_slug>/spatial_stats/...`
 - `outputs/run/<image_slug>/band_geometry/...`
 - `outputs/run/<image_slug>/dark_morphology/...`
+- `outputs/run/<image_slug>/visibility/...`
 - `outputs/run/run_manifest.json` (overall run summary)
 
 Resume mode (skip already finished steps):
@@ -325,6 +329,17 @@ ruff check src tests
 ```
 
 CI runs lint + tests on push/PR.
+
+## Visibility Score v1
+
+Amanogawa now writes `visibility_features.json` and `visibility_score.json` for each full run.
+
+- `visibility_score` is an **image-based relative visibility / analyzability** score from 0-100.
+- It is intentionally **not** an estimate of the true sky quality or absolute light pollution.
+- v1 does **not** adjust for device differences. A weaker phone or stronger in-camera processing can lower the score.
+- Use `qc_status` / `research_usable` to decide whether an image is strong enough evidence for downstream analysis.
+
+See `docs/minimum_data_spec.md` for the precise contract and interpretation limits.
 
 ## Quick Verification (for reviewers)
 
