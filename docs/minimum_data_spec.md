@@ -28,6 +28,53 @@ They should not be interpreted as a direct claim that the site itself has a poor
   - `detection_summary.json`
   - `star_coords.csv`
 
+## Accepted input scope
+
+Visibility v1 accepts one still image that can be read by the current image I/O layer.
+
+Supported directly:
+
+- `jpg`
+- `jpeg`
+- `png`
+- `tif`
+- `tiff`
+
+Supported with optional HEIF support installed:
+
+- `heif`
+- `heic`
+- `hif`
+
+PNG is acceptable for v1 **if it preserves the content of one capture**.
+In other words, a PNG exported from a single original image can still support the
+minimum v1 analysis contract.
+
+The following are out of scope for the current contract:
+
+- stacked composites,
+- mosaics,
+- screenshots,
+- annotated images,
+- social-media recompressions with unknown processing history,
+- images that combine multiple exposures into one file.
+
+## Resolution and quality floor
+
+Visibility v1 does **not** impose a hard-coded minimum resolution threshold.
+
+Instead, the quality floor is operational:
+
+- preserve original resolution whenever possible,
+- avoid aggressive downsampling before analysis,
+- keep the image close to the original single-capture content,
+- let `visibility_score`, `qc_status`, and `research_usable` reflect whether the
+  image contains enough usable evidence.
+
+This means a lower-resolution PNG can still be processed, but if it no longer
+retains enough stars, band contrast, or dark-lane structure, Amanogawa should
+return a lower score or fail the QC gate rather than infer missing information.
+
 ## Minimum metadata snapshot
 
 The visibility step preserves a device snapshot for later calibration-aware analysis:
