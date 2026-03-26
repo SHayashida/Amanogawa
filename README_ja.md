@@ -163,7 +163,9 @@ CI でも lint + tests を実行します。
 
 JOSS 原稿ソース: `paper/paper.md` と `paper/paper.bib`。
 
-Zenodo DOI 発行後は、英語版 README.md の Citation 節を更新してください。
+Zenodo DOI は発行済みです: [10.5281/zenodo.18213564](https://doi.org/10.5281/zenodo.18213564)。
+
+引用情報は `CITATION.cff` と英語版 `README.md` の Citation 節を参照してください。
 
 ## Data license（画像データ）
 

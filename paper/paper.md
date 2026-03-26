@@ -29,7 +29,15 @@ The workflow supports both interactive notebook use and a command-line interface
 
 Consumer astrophotography and citizen-science observations have become widespread, yet the scientific potential of smartphone-collected wide-field Milky Way images remains largely untapped. Common tools for smartphone and hobbyist images primarily target aesthetic outputs (stacking, denoising, stretching) rather than transparent measurement and robustness diagnostics, creating a barrier to quantitative citizen participation in astronomical observation and discovery. Conversely, quantitative studies of Galactic structure and stellar clustering often rely on curated survey catalogs and pipelines that assume calibrated instruments and rich metadata. This creates a practical gap: single-exposure images are easy to collect and share, yet difficult to convert into defensible, reproducible summaries with clearly stated limits.
 
+The target audience includes: (1) researchers prototyping quantitative analyses from consumer wide-field imagery, (2) educators and citizen-science organizers who need limitation-aware, reproducible outputs, and (3) reviewers who need inspectable software artifacts rather than presentation-oriented image processing results.
+
+# State of the field
+
 Existing astronomical software such as SExtractor [@bertin1996] and astrometry.net [@lang2010astrometrynet] excel at source detection and astrometric calibration for calibrated telescope data, but are not optimized for the specific workflow of single smartphone exposures without prior astrometry. Photometric and morphological analysis tools like Astropy and Photutils [@astropy2022; @photutils1110] provide excellent building blocks but require significant configuration and do not by themselves define a submission-ready contract for smartphone imagery. Amanogawa packages these building blocks into a reproducible artifact pipeline with per-image normalization, threshold-sweep diagnostics, morphology summaries, and an explicit separation between image-based evidence quality and stronger downstream interpretation.
+
+Amanogawa was developed as a new package rather than as a thin extension to one existing tool because the main contribution is the integrated contract across multiple analysis layers (detection, spatial statistics, band geometry, dark morphology, and visibility scoring), together with standardized provenance artifacts (`run_manifest.json`, JSON/CSV summaries, and diagnostic figures) that remain consistent across notebook and CLI workflows.
+
+# Software design
 
 Amanogawa addresses this gap by providing an end-to-end pipeline that connects (1) source detection, (2) spatial statistics, (3) Milky Way band geometry, (4) dark-lane morphology, and (5) a visibility v1 scoring layer into a coherent and inspectable workflow. For source detection, Amanogawa uses Laplacian-of-Gaussian (LoG) blob detection [@lindeberg1998] (implemented via standard scientific Python image-processing tooling [@vanderwalt2014scikitimage]) and includes an explicit *threshold-sweep* routine that recomputes downstream metrics across a range of detection thresholds. This built-in sensitivity analysis helps users avoid over-interpreting results tied to a single parameter choice and provides a simple, teachable robustness layer for non-specialists.
 
@@ -40,6 +48,12 @@ For Milky Way band morphology, Amanogawa estimates the band principal axis from 
 The current release also includes a visibility v1 layer that combines point-source, diffuse-structure, and background-related features into an image-based relative visibility / analyzability score. Crucially, this score is not a calibrated measure of true sky quality; it is a structured summary of what the submitted image supports. Device metadata are preserved for later calibration-aware analysis, but device-adjusted comparability is intentionally out of scope for this release.
 
 The workflow can be run on a single 30 s smartphone exposure to produce stable, inspectable outputs across threshold sweeps, together with run manifests and visibility artifacts that preserve provenance and interpretation boundaries. The software’s main contribution is therefore not a claim of definitive astrophysical inference from one image, but a reproducible measurement framework: it defines what can be extracted from one smartphone image today, what remains only a relative proxy, and which stronger claims must wait for later calibration and methods validation. In this sense, Amanogawa answers a software need that is central to the broader project mission: it makes "one smartphone photo" a traceable scientific input before broader methods claims or public citizen-science deployment are attempted.
+
+# Research impact statement
+
+Amanogawa currently contributes near-term scholarly significance through reproducible research materials that can be independently re-run and inspected by reviewers and downstream users. The repository provides deterministic test coverage, continuous integration checks, documented reviewer verification commands, and a single-command end-to-end pipeline that emits provenance-preserving artifacts (including per-image run manifests and visibility summaries). This enables objective software review and reproducible comparison across parameter settings before stronger calibration-dependent scientific claims are attempted.
+
+In practical terms, the package is designed to be reused as a common preprocessing and measurement layer for follow-on astronomy-methods validation work, classroom/research training workflows, and future community submission pipelines where transparent limitation handling is required alongside quantitative outputs.
 
 # Example Output
 

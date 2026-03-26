@@ -97,7 +97,7 @@ Verify manually before submission:
 
 Repo-backed materials already present:
 
-- [x] The paper has a title, summary, statement of need, example output, acknowledgements, AI disclosure, and references.
+- [x] The paper has a title, summary, statement of need, state of the field, software design, research impact statement, AI disclosure, example output, acknowledgements, and references.
 - [x] The paper states the software’s scope as reproducible quantitative analysis from single smartphone images.
 - [x] The paper includes a software archive DOI.
 - [x] The paper avoids presenting the example outputs as definitive astrophysical claims.
@@ -105,11 +105,27 @@ Repo-backed materials already present:
 Verify manually before submission:
 
 - [ ] The paper cleanly answers JOSS expectations: what the software does, why it is needed, and how it differs from related tools.
+- [ ] Required section labels are present exactly and substantively: `Statement of need`, `State of the field`, `Software design`, `Research impact statement`, `AI usage disclosure`.
 - [ ] The paper focuses on software contribution rather than trying to serve as the astronomy methods paper.
 - [ ] All references cited in the text are present in `paper.bib`.
 - [ ] The paper PDF builds successfully from the submission revision.
 - [ ] The example figure renders correctly in the generated PDF.
 - [ ] The wording around visibility v1 remains limitation-aware and does not imply validated environmental inference.
+
+## Additional review-criteria readiness (newer JOSS guidance)
+
+Repo-backed materials already present:
+
+- [x] OSI-approved license file exists (`LICENSE`).
+- [x] Community pathways exist (`CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`).
+- [x] Automated tests and CI are present.
+- [x] Installation and verification paths are documented in README and USER_GUIDE.
+
+Verify manually before submission:
+
+- [ ] Repository development history satisfies JOSS expectation for sustained open development (timeline/release/public activity).
+- [ ] Commit/authorship context appears appropriate for scope; be ready to explain contribution model in review.
+- [ ] If asked by reviewers, provide concrete examples of near-term impact signals (reproducible materials, integration pathway, external interest/adoption evidence).
 
 ## Citation and archival integrity
 

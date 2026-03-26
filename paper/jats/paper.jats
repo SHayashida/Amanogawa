@@ -116,6 +116,14 @@ a Creative Commons Attribution 4.0 International License (CC BY
   practical gap: single-exposure images are easy to collect and share,
   yet difficult to convert into defensible, reproducible summaries with
   clearly stated limits.</p>
+  <p>The target audience includes: (1) researchers prototyping
+  quantitative analyses from consumer wide-field imagery, (2) educators
+  and citizen-science organizers who need limitation-aware, reproducible
+  outputs, and (3) reviewers who need inspectable software artifacts
+  rather than presentation-oriented image processing results.</p>
+</sec>
+<sec id="state-of-the-field">
+  <title>State of the field</title>
   <p>Existing astronomical software such as SExtractor
   (<xref alt="Bertin &amp; Arnouts, 1996" rid="ref-bertin1996" ref-type="bibr">Bertin
   &amp; Arnouts, 1996</xref>) and astrometry.net
@@ -135,6 +143,17 @@ a Creative Commons Attribution 4.0 International License (CC BY
   per-image normalization, threshold-sweep diagnostics, morphology
   summaries, and an explicit separation between image-based evidence
   quality and stronger downstream interpretation.</p>
+  <p>Amanogawa was developed as a new package rather than as a thin
+  extension to one existing tool because the main contribution is the
+  integrated contract across multiple analysis layers (detection,
+  spatial statistics, band geometry, dark morphology, and visibility
+  scoring), together with standardized provenance artifacts
+  (<monospace>run_manifest.json</monospace>, JSON/CSV summaries, and
+  diagnostic figures) that remain consistent across notebook and CLI
+  workflows.</p>
+</sec>
+<sec id="software-design">
+  <title>Software design</title>
   <p>Amanogawa addresses this gap by providing an end-to-end pipeline
   that connects (1) source detection, (2) spatial statistics, (3) Milky
   Way band geometry, (4) dark-lane morphology, and (5) a visibility v1
@@ -223,6 +242,24 @@ a Creative Commons Attribution 4.0 International License (CC BY
   software need that is central to the broader project mission: it makes
   “one smartphone photo” a traceable scientific input before broader
   methods claims or public citizen-science deployment are attempted.</p>
+</sec>
+<sec id="research-impact-statement">
+  <title>Research impact statement</title>
+  <p>Amanogawa currently contributes near-term scholarly significance
+  through reproducible research materials that can be independently
+  re-run and inspected by reviewers and downstream users. The repository
+  provides deterministic test coverage, continuous integration checks,
+  documented reviewer verification commands, and a single-command
+  end-to-end pipeline that emits provenance-preserving artifacts
+  (including per-image run manifests and visibility summaries). This
+  enables objective software review and reproducible comparison across
+  parameter settings before stronger calibration-dependent scientific
+  claims are attempted.</p>
+  <p>In practical terms, the package is designed to be reused as a
+  common preprocessing and measurement layer for follow-on
+  astronomy-methods validation work, classroom/research training
+  workflows, and future community submission pipelines where transparent
+  limitation handling is required alongside quantitative outputs.</p>
 </sec>
 <sec id="example-output">
   <title>Example Output</title>

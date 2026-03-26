@@ -16,7 +16,7 @@ identifiers:
 
 preferred-citation:
   type: article
-  title: "Amanogawa: Quantifying Milky Way clustering and band morphology from a single smartphone exposure"
+  title: "Amanogawa: Reproducible quantification of Milky Way structure from single-exposure smartphone images"
   authors:
     - family-names: Hayashida
       given-names: Shunya
